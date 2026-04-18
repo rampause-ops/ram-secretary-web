@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ram Secretary</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg:#07070f; --surface:#10101e; --surface2:#181828; --surface3:#1e1e32;
+  --purple:#7c3aed; --purple-light:#9d5af5; --purple-dim:#3b1f7a;
+  --purple-glow:rgba(124,58,237,0.25);
+  --gold:#c9a84c; --gold-light:#e8c96a;
+  --white:#f0f0fa; --muted:#6b6b8a;
+  --danger:#e05555; --success:#2dbd7e; --warning:#e09c3a;
+  --border:rgba(124,58,237,0.2); --radius:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;min-height:100vh;overflow-x:hidden}
+
+/* ── AUTH SCREEN ── */
+#authScreen{
+  min-height:100vh;
+  background:radial-gradient(ellipse at 30% 20%, rgba(124,58,237,0.18) 0%, transparent 60%),
+             radial-gradient(ellipse at 70% 80%, rgba(201,168,76,0.1) 0%, transparent 50%),
+             var(--bg);
+  display:flex;align-items:center;justify-content:center;padding:20px;
+}
+.auth-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:20px;
+  padding:36px 32px;width:100%;max-width:400px;
+  box-shadow:0 24px 80px rgba(0,0,0,0.6), 0 0 60px var(--purple-glow);
+  animation:slideUp .35s ease;
+}
+@keyframes slideUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.auth-logo{
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;margin-bottom:28px;
+}
+.auth-logo-icon{
+  width:52px;height:52px;
+  background:linear-gradient(135deg,var(--purple),var(--gold));
+  border-radius:14px;display:flex;align-items:center;justify-content:center;
+  font-family:'Cinzel',serif;font-size:22px;font-weight:700;color:#fff;
+  box-shadow:0 0 30px var(--purple-glow);
+}
+.auth-title{font-family:'Cinzel',serif;font-size:20px;font-weight:700;letter-spacing:1px}
+.auth-subtitle{font-size:11px;color:var(--gold);letter-spacing:2px;text-transform:uppercase}
+.auth-tabs{display:flex;gap:0;background:var(--surface2);border-radius:10px;padding:4px;margin-bottom:24px}
+.auth-tab{flex:1;padding:9px;text-align:center;border-radius:7px;cursor:pointer;font-size:12px;font-weight:600;color:var(--muted);transition:.2s}
+.auth-tab.active{background:var(--purple);color:#fff;box-shadow:0 2px 12px var(--purple-glow)}
+.form-group{margin-bottom:14px}
+.form-label{display:block;font-size:11px;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.form-input{
+  width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--white);
+  padding:11px 14px;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:.2s;
+}
+.form-input:focus{border-color:var(--purple);box-shadow:0 0 0 3px var(--purple-glow)}
+.form-input::placeholder{color:var(--muted)}
+.pw-wrap{position:relative}
+.pw-wrap .form-input{padding-right:44px}
+.pw-eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;padding:4px}
+.pw-eye:hover{color:var(--white)}
+.btn-auth{
+  width:100%;padding:13px;border:none;border-radius:10px;cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;letter-spacing:.5px;
+  background:linear-gradient(135deg,var(--purple),var(--purple-light));
+  color:#fff;box-shadow:0 6px 24px var(--purple-glow);transition:.2s;
+  display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px;
+}
+.btn-auth:hover{transform:translateY(-1px);box-shadow:0 8px 28px var(--purple-glow)}
+.btn-auth:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.auth-error{background:rgba(224,85,85,.15);border:1px solid rgba(224,85,85,.3);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--danger);margin-bottom:14px;display:none}
+.auth-error.show{display:block;animation:slideUp .2s ease}
+.spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── MAIN APP ── */
+#app{display:none;min-height:100vh;flex-direction:column}
+#app.visible{display:flex}
+
+/* HEADER */
+.header{
+  background:linear-gradient(135deg,#0e0e1f,#130d2e);
+  border-bottom:1px solid var(--border);padding:14px 18px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;flex-shrink:0;
+}
+.header-brand{display:flex;align-items:center;gap:10px}
+.logo-icon{
+  width:34px;height:34px;background:linear-gradient(135deg,var(--purple),var(--gold));
+  border-radius:9px;display:flex;align-items:center;justify-content:center;
+  font-family:'Cinzel',serif;font-size:15px;font-weight:700;color:#fff;
+  box-shadow:0 0 16px var(--purple-glow);
+}
+.header-text .h-title{font-family:'Cinzel',serif;font-size:14px;font-weight:600;letter-spacing:1px}
+.header-text .h-sub{font-size:9px;color:var(--gold);letter-spacing:2px;text-transform:uppercase}
+.header-right{display:flex;align-items:center;gap:10px}
+.header-date{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:5px 10px;font-size:10px;color:var(--muted);text-align:right}
+.header-date strong{display:block;font-size:12px;color:var(--white)}
+.user-avatar{
+  width:34px;height:34px;border-radius:50%;border:2px solid var(--purple);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;cursor:pointer;transition:.2s;flex-shrink:0;
+  background:linear-gradient(135deg,var(--purple-dim),var(--purple));color:#fff;
+  position:relative;
+}
+.user-avatar:hover{border-color:var(--gold)}
+.user-menu{
+  position:absolute;top:calc(100% + 8px);right:0;min-width:200px;
+  background:var(--surface2);border:1px solid var(--border);border-radius:12px;
+  box-shadow:0 12px 40px rgba(0,0,0,.5);z-index:200;overflow:hidden;
+  display:none;animation:slideUp .2s ease;
+}
+.user-menu.open{display:block}
+.user-menu-info{padding:14px;border-bottom:1px solid var(--border)}
+.user-menu-name{font-weight:600;font-size:13px;color:var(--white)}
+.user-menu-email{font-size:11px;color:var(--muted);margin-top:2px}
+.user-menu-item{
+  padding:11px 14px;cursor:pointer;font-size:12px;color:var(--muted);
+  display:flex;align-items:center;gap:8px;transition:.15s;
+}
+.user-menu-item:hover{background:var(--surface3);color:var(--white)}
+.user-menu-item.danger:hover{color:var(--danger)}
+
+/* TABS */
+.tabs{
+  display:flex;background:var(--surface);border-bottom:1px solid var(--border);
+  overflow-x:auto;scrollbar-width:none;flex-shrink:0;
+}
+.tabs::-webkit-scrollbar{display:none}
+.tab{
+  flex:1;min-width:72px;padding:11px 8px;text-align:center;cursor:pointer;
+  font-size:10px;font-weight:600;color:var(--muted);letter-spacing:.5px;
+  border-bottom:2px solid transparent;transition:.2s;white-space:nowrap;
+}
+.tab .ti{font-size:15px;display:block;margin-bottom:2px}
+.tab.active{color:var(--purple-light);border-bottom-color:var(--purple-light)}
+.tab:hover:not(.active){color:var(--white)}
+
+/* CONTENT */
+.content{padding:14px;max-width:700px;margin:0 auto;padding-bottom:80px;flex:1}
+.view{display:none}.view.active{display:block}
+
+/* PROGRESS */
+.progress-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:14px}
+.progress-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.progress-pct{font-family:'Cinzel',serif;font-size:28px;font-weight:700;color:var(--purple-light)}
+.progress-track{height:8px;background:var(--surface3);border-radius:99px;overflow:hidden;margin-bottom:10px}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--purple-light));border-radius:99px;transition:width .5s ease}
+.progress-counts{display:flex;gap:12px;flex-wrap:wrap}
+.p-count{font-size:11px;color:var(--muted)}
+.p-count.done{color:var(--success)}.p-count.skip{color:var(--danger)}.p-count.pend{color:var(--warning)}
+
+/* ALERT */
+.alert-banner{
+  background:linear-gradient(135deg,rgba(224,149,58,.15),rgba(224,149,58,.05));
+  border:1px solid rgba(224,149,58,.4);border-radius:var(--radius);
+  padding:12px 16px;margin-bottom:14px;display:none;align-items:center;gap:10px;
+  animation:pulseGlow 2s infinite;
+}
+.alert-banner.show{display:flex}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 0 rgba(224,149,58,0)}50%{box-shadow:0 0 12px rgba(224,149,58,.2)}}
+.alert-text strong{color:var(--warning);display:block;font-size:12px}
+.alert-text span{color:var(--muted);font-size:11px}
+
+/* SECTION HEADER */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.section-title{font-family:'Cinzel',serif;font-size:12px;font-weight:600;color:var(--gold);letter-spacing:1px;text-transform:uppercase}
+.section-date{font-size:10px;color:var(--muted)}
+
+/* BUTTONS */
+.btn{padding:9px 18px;border:none;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:.5px;transition:.2s;display:inline-flex;align-items:center;gap:6px}
+.btn-primary{background:linear-gradient(135deg,var(--purple),var(--purple-light));color:#fff;box-shadow:0 4px 14px var(--purple-glow)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px var(--purple-glow)}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#0a0a0a}
+.btn-gold:hover{transform:translateY(-1px)}
+.btn-ghost{background:var(--surface2);color:var(--muted);border:1px solid var(--border)}
+.btn-ghost:hover{color:var(--white);border-color:var(--purple)}
+.btn-danger{background:rgba(224,85,85,.15);color:var(--danger);border:1px solid rgba(224,85,85,.3)}
+.btn-danger:hover{background:rgba(224,85,85,.25)}
+.btn-sm{padding:6px 12px;font-size:11px}
+.btn-icon{padding:7px;border-radius:7px}
+
+/* TASK CARDS */
+.task-list{display:flex;flex-direction:column;gap:9px}
+.task-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:13px;transition:.2s;position:relative;overflow:hidden}
+.task-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px}
+.task-card.done::before{background:var(--success)}
+.task-card.pending::before{background:var(--warning)}
+.task-card.skipped::before{background:var(--danger)}
+.task-card:hover{border-color:var(--purple-dim);background:var(--surface2)}
+.task-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.task-name{font-weight:600;font-size:14px;color:var(--white);flex:1}
+.task-actions{display:flex;gap:5px;flex-shrink:0}
+.task-meta{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;align-items:center}
+.badge{padding:3px 9px;border-radius:20px;font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+.badge-time{background:var(--surface3);color:var(--muted)}
+.badge-brand{background:rgba(124,58,237,.2);color:var(--purple-light)}
+.badge-done{background:rgba(45,189,126,.15);color:var(--success)}
+.badge-pending{background:rgba(224,156,58,.15);color:var(--warning)}
+.badge-skipped{background:rgba(224,85,85,.15);color:var(--danger)}
+.task-reason{margin-top:5px;font-size:11px;color:var(--muted);font-style:italic}
+.empty-state{text-align:center;padding:40px 20px;color:var(--muted)}
+.empty-state .ei{font-size:38px;margin-bottom:10px}
+.empty-state p{font-size:13px}
+
+/* SKELETON */
+.skeleton{background:linear-gradient(90deg,var(--surface2) 25%,var(--surface3) 50%,var(--surface2) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:8px}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.skel-card{height:72px;margin-bottom:9px;border-radius:var(--radius)}
+
+/* NOTES */
+.notes-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-top:14px}
+.notes-label{font-size:11px;color:var(--gold);font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
+.notes-textarea{width:100%;background:transparent;border:none;outline:none;color:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;resize:none;min-height:72px;line-height:1.6}
+.notes-textarea::placeholder{color:var(--muted)}
+.notes-indicator{font-size:10px;color:var(--muted);margin-top:4px}
+
+/* HISTORY NAV */
+.history-nav{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:11px 14px;margin-bottom:14px}
+.history-nav button{background:var(--surface2);border:1px solid var(--border);color:var(--white);padding:6px 10px;border-radius:7px;cursor:pointer;font-size:13px;transition:.2s}
+.history-nav button:hover{border-color:var(--purple)}
+.history-nav .dd{flex:1;text-align:center}
+.history-nav .dd strong{display:block;font-size:14px;color:var(--white)}
+.history-nav .dd span{font-size:10px;color:var(--muted)}
+.history-nav input[type="date"]{background:var(--surface2);border:1px solid var(--border);color:var(--white);padding:6px 10px;border-radius:7px;font-family:'DM Sans',sans-serif;font-size:12px;cursor:pointer}
+.history-nav input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(.7)}
+
+/* DASHBOARD STATS */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 10px;text-align:center}
+.stat-value{font-family:'Cinzel',serif;font-size:22px;font-weight:700;color:var(--purple-light)}
+.stat-label{font-size:10px;color:var(--muted);margin-top:3px;text-transform:uppercase;letter-spacing:.5px}
+.stat-sub{font-size:11px;color:var(--gold);margin-top:2px}
+
+/* STREAK BAR */
+.streak-bar{display:flex;gap:4px;flex-wrap:wrap}
+.streak-day{flex:1;min-width:28px;max-width:40px;aspect-ratio:1;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:8px;font-weight:700;cursor:default;transition:.2s;border:1px solid transparent}
+.streak-day.good{background:rgba(45,189,126,.25);color:var(--success);border-color:rgba(45,189,126,.3)}
+.streak-day.partial{background:rgba(224,156,58,.25);color:var(--warning);border-color:rgba(224,156,58,.3)}
+.streak-day.bad{background:rgba(224,85,85,.2);color:var(--danger);border-color:rgba(224,85,85,.3)}
+.streak-day.empty{background:var(--surface2);color:var(--muted);border-color:var(--border)}
+.streak-day.today{border-color:var(--purple-light)!important;box-shadow:0 0 8px var(--purple-glow)}
+
+/* CHARTS */
+.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px}
+.chart-title{font-family:'Cinzel',serif;font-size:11px;font-weight:600;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px}
+.chart-wrapper{position:relative;width:100%}
+.chart-wrapper canvas{max-height:200px}
+
+/* COMP TABLE */
+.comp-table{width:100%;border-collapse:collapse;font-size:12px}
+.comp-table th{color:var(--gold);font-size:10px;text-transform:uppercase;letter-spacing:.5px;padding:8px;text-align:left;border-bottom:1px solid var(--border)}
+.comp-table td{padding:10px 8px;border-bottom:1px solid rgba(124,58,237,.1);color:var(--white)}
+.comp-table tr:last-child td{border-bottom:none}
+.trend-up{color:var(--success)}.trend-down{color:var(--danger)}.trend-same{color:var(--muted)}
+
+/* REPORT */
+.report-header-row{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.week-selector{background:var(--surface2);border:1px solid var(--border);color:var(--white);padding:8px 12px;border-radius:8px;font-family:'DM Sans';font-size:12px;flex:1}
+.report-day{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px;margin-bottom:8px}
+.report-day-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.report-day-name{font-weight:600;font-size:13px}
+.report-task-row{display:flex;align-items:center;gap:8px;padding:4px 0;border-top:1px solid rgba(255,255,255,.04)}
+.status-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.status-dot.done{background:var(--success)}.status-dot.pending{background:var(--warning)}.status-dot.skipped{background:var(--danger)}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(4px);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:24px;width:100%;max-width:480px;box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 40px var(--purple-glow);animation:slideUp .25s ease}
+.modal-title{font-family:'Cinzel',serif;font-size:15px;font-weight:600;margin-bottom:18px;color:var(--white)}
+.modal-title span{color:var(--gold)}
+.form-group{margin-bottom:13px}
+.form-label-m{font-size:11px;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;display:block}
+.form-input-m,.form-select-m,.form-textarea-m{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--white);padding:10px 14px;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:13px;transition:.2s;outline:none}
+.form-input-m:focus,.form-select-m:focus,.form-textarea-m:focus{border-color:var(--purple);box-shadow:0 0 0 3px var(--purple-glow)}
+.form-select-m option{background:#1a1a28}
+.form-textarea-m{resize:vertical;min-height:68px;line-height:1.5}
+.form-row-m{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.reason-group{display:none}.reason-group.visible{display:block}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
+
+/* PIN */
+.pin-display{display:flex;gap:12px;justify-content:center;margin:14px 0}
+.pin-dot{width:46px;height:46px;background:var(--surface2);border:2px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--purple-light);font-weight:700;transition:.15s}
+.pin-dot.filled{border-color:var(--purple);background:var(--purple-dim)}
+.pin-keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:220px;margin:0 auto}
+.pin-key{background:var(--surface2);border:1px solid var(--border);color:var(--white);padding:13px;border-radius:10px;font-size:16px;font-weight:600;cursor:pointer;transition:.15s;text-align:center}
+.pin-key:hover{background:var(--surface3);border-color:var(--purple)}
+.pin-key.zero{grid-column:2}.pin-key.del{grid-column:3;color:var(--danger)}
+.pin-error{color:var(--danger);font-size:12px;text-align:center;margin-top:8px;display:none}
+.pin-error.show{display:block;animation:shake .3s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+/* FAB */
+.fab{position:fixed;bottom:22px;right:18px;width:50px;height:50px;background:linear-gradient(135deg,var(--purple),var(--purple-light));border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;box-shadow:0 6px 22px var(--purple-glow);transition:.2s;z-index:90}
+.fab:hover{transform:scale(1.1)}
+
+/* TOAST */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--surface2);border:1px solid var(--border);border-radius:99px;padding:10px 20px;font-size:12px;color:var(--white);white-space:nowrap;z-index:300;opacity:0;transition:.25s;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* OFFLINE BANNER */
+.offline-banner{background:rgba(224,156,58,.15);border-bottom:1px solid rgba(224,156,58,.3);padding:8px 18px;font-size:11px;color:var(--warning);text-align:center;display:none}
+.offline-banner.show{display:block}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--purple-dim);border-radius:10px}
+
+/* PROGRESS BAR MINI */
+.mini-bar-track{height:3px;background:var(--surface3);border-radius:99px;margin-top:4px}
+.mini-bar-fill{height:100%;border-radius:99px;transition:width .4s}
+
+@media(max-width:480px){
+  .auth-card{padding:26px 20px}
+  .stats-row .stat-value{font-size:18px}
+}
+@media print{
+  .header,.tabs,.fab,.modal-overlay,#view-today,#view-history,#view-dashboard{display:none!important}
+  #view-report{display:block!important}
+  body{background:#fff;color:#000}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ AUTH SCREEN ══════════════ -->
+<div id="authScreen">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div class="auth-logo-icon">R</div>
+      <div class="auth-title">Ram Secretary</div>
+      <div class="auth-subtitle">Mfumo wa Ratiba</div>
+    </div>
+    <div class="auth-tabs">
+      <div class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">Ingia / Sign In</div>
+      <div class="auth-tab" id="tabRegister" onclick="switchAuthTab('register')">Sajili / Register</div>
+    </div>
+
+    <!-- LOGIN -->
+    <div id="loginForm">
+      <div id="loginError" class="auth-error"></div>
+      <div class="form-group">
+        <label class="form-label">Barua Pepe / Email</label>
+        <input type="email" class="form-input" id="loginEmail" placeholder="wewe@example.com" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Nywila / Password</label>
+        <div class="pw-wrap">
+          <input type="password" class="form-input" id="loginPw" placeholder="Nywila yako..." />
+          <button class="pw-eye" onclick="togglePw('loginPw',this)">👁</button>
+        </div>
+      </div>
+      <button class="btn-auth" id="loginBtn" onclick="doLogin()">
+        <span>Ingia / Sign In</span>
+      </button>
+    </div>
+
+    <!-- REGISTER -->
+    <div id="registerForm" style="display:none">
+      <div id="registerError" class="auth-error"></div>
+      <div class="form-group">
+        <label class="form-label">Jina Kamili / Full Name</label>
+        <input type="text" class="form-input" id="regName" placeholder="Jina lako kamili..." />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Barua Pepe / Email</label>
+        <input type="email" class="form-input" id="regEmail" placeholder="wewe@example.com" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Nywila / Password</label>
+        <div class="pw-wrap">
+          <input type="password" class="form-input" id="regPw" placeholder="Angalau herufi 6..." />
+          <button class="pw-eye" onclick="togglePw('regPw',this)">👁</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Thibitisha Nywila / Confirm Password</label>
+        <div class="pw-wrap">
+          <input type="password" class="form-input" id="regPw2" placeholder="Rudia nywila..." />
+          <button class="pw-eye" onclick="togglePw('regPw2',this)">👁</button>
+        </div>
+      </div>
+      <button class="btn-auth" id="registerBtn" onclick="doRegister()">
+        <span>Sajili / Register</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ MAIN APP ══════════════ -->
+<div id="app">
+  <div class="offline-banner" id="offlineBanner">⚠️ Huna mtandao / You are offline</div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-brand">
+      <div class="logo-icon">R</div>
+      <div class="header-text">
+        <div class="h-title">Ram Secretary</div>
+        <div class="h-sub">Mfumo wa Ratiba</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="header-date">
+        <strong id="headerDateStr">—</strong>
+        <span id="headerDayStr">—</span>
+      </div>
+      <div class="user-avatar" id="userAvatar" onclick="toggleUserMenu()">
+        <span id="avatarInitials">?</span>
+        <div class="user-menu" id="userMenu">
+          <div class="user-menu-info">
+            <div class="user-menu-name" id="menuUserName">—</div>
+            <div class="user-menu-email" id="menuUserEmail">—</div>
+          </div>
+          <div class="user-menu-item" onclick="openSettings()">⚙️ Mipangilio / Settings</div>
+          <div class="user-menu-item danger" onclick="doSignOut()">🚪 Toka / Sign Out</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <div class="tab active" id="tab-today" onclick="switchTab('today')"><span class="ti">📋</span>Leo</div>
+    <div class="tab" id="tab-history" onclick="switchTab('history')"><span class="ti">📅</span>Historia</div>
+    <div class="tab" id="tab-dashboard" onclick="switchTab('dashboard')"><span class="ti">📊</span>Dashboard</div>
+    <div class="tab" id="tab-report" onclick="switchTab('report')"><span class="ti">📄</span>Ripoti</div>
+  </div>
+
+  <div class="content">
+
+    <!-- TODAY -->
+    <div class="view active" id="view-today">
+      <div class="progress-section">
+        <div class="progress-top">
+          <div>
+            <div class="progress-pct" id="progressPct">—</div>
+            <div style="font-size:10px;color:var(--muted)">Completion ya Leo</div>
+          </div>
+          <div style="text-align:right;font-size:11px;color:var(--muted)" id="todaySectionDate">—</div>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="progressBar" style="width:0%"></div></div>
+        <div class="progress-counts">
+          <span class="p-count done" id="doneCount">✓ 0 Imekamilika</span>
+          <span class="p-count pend" id="pendingCount">⏳ 0 Inasubiri</span>
+          <span class="p-count skip" id="skippedCount">✗ 0 Ilirukwa</span>
+        </div>
+      </div>
+      <div class="alert-banner" id="alertBanner">
+        <span style="font-size:20px">⚠️</span>
+        <div class="alert-text">
+          <strong id="alertTitle"></strong>
+          <span id="alertMsg"></span>
+        </div>
+      </div>
+      <div class="section-header">
+        <div class="section-title">📋 Ratiba ya Leo / Today</div>
+      </div>
+      <div class="task-list" id="todayTaskList">
+        <div class="skeleton skel-card"></div>
+        <div class="skeleton skel-card"></div>
+        <div class="skeleton skel-card" style="height:52px"></div>
+      </div>
+      <div class="notes-card">
+        <div class="notes-label">📝 Maelezo ya Siku / Daily Notes</div>
+        <textarea class="notes-textarea" id="dailyNotesInput" placeholder="Andika maelezo yako ya leo..." oninput="scheduleNoteSave()"></textarea>
+        <div class="notes-indicator" id="notesSaveIndicator"></div>
+      </div>
+    </div>
+
+    <!-- HISTORY -->
+    <div class="view" id="view-history">
+      <div class="history-nav">
+        <button onclick="historyPrev()">◀</button>
+        <div class="dd">
+          <strong id="historyDateStr">—</strong>
+          <span id="historyDayStr">—</span>
+        </div>
+        <button onclick="historyNext()">▶</button>
+        <input type="date" id="historyPicker" onchange="historyPickDate()" />
+      </div>
+      <div class="section-header">
+        <div class="section-title">📅 Tasks za Siku Hii</div>
+        <div id="historyProgressBadge"></div>
+      </div>
+      <div class="task-list" id="historyTaskList">
+        <div class="skeleton skel-card"></div>
+        <div class="skeleton skel-card" style="height:52px"></div>
+      </div>
+      <div class="notes-card">
+        <div class="notes-label">📝 Maelezo / Notes</div>
+        <div id="historyNotesText" style="font-size:13px;color:var(--muted);line-height:1.6">Hakuna maelezo kwa siku hii.</div>
+      </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="view" id="view-dashboard">
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-value" id="statTodayPct">—</div><div class="stat-label">Leo</div><div class="stat-sub">Completion</div></div>
+        <div class="stat-card"><div class="stat-value" id="statWeekPct">—</div><div class="stat-label">Wiki</div><div class="stat-sub">This Week</div></div>
+        <div class="stat-card"><div class="stat-value" id="statStreak">—</div><div class="stat-label">Streak</div><div class="stat-sub">Siku Mfululizo</div></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">📅 Hali ya Siku 14 / 14-Day Activity</div>
+        <div class="streak-bar" id="streakBar"></div>
+        <div style="display:flex;gap:12px;margin-top:10px;flex-wrap:wrap">
+          <span style="font-size:10px;color:var(--success)">● Nzuri (≥75%)</span>
+          <span style="font-size:10px;color:var(--warning)">● Kati (25–74%)</span>
+          <span style="font-size:10px;color:var(--danger)">● Mbaya (&lt;25%)</span>
+          <span style="font-size:10px;color:var(--muted)">● Hakuna data</span>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">📈 Completion ya Wiki / Weekly %</div>
+        <div class="chart-wrapper"><canvas id="completionChart"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">🏷️ Utendaji wa Brand</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:center">
+          <div class="chart-wrapper"><canvas id="brandChart"></canvas></div>
+          <div id="brandLegend" style="font-size:11px"></div>
+        </div>
+      </div>
+      <div class="chart-card" id="noProgressCard">
+        <div class="chart-title">🚫 Siku Bila Maendeleo / No-Progress Days</div>
+        <div id="noProgressContent"></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">🔄 Wiki Hii vs Wiki Iliyopita</div>
+        <table class="comp-table"><thead><tr><th>Brand</th><th>Wiki Iliyopita</th><th>Wiki Hii</th><th>Mwelekeo</th></tr></thead><tbody id="weekCompBody"></tbody></table>
+      </div>
+    </div>
+
+    <!-- REPORT -->
+    <div class="view" id="view-report">
+      <div class="report-header-row">
+        <select class="week-selector" id="reportWeekSelect" onchange="renderReport()"></select>
+        <button class="btn btn-gold btn-sm" onclick="window.print()">🖨️ Print</button>
+      </div>
+      <div id="reportContent"></div>
+    </div>
+
+  </div><!-- /content -->
+
+  <button class="fab" id="fabBtn" onclick="openAddTask()">+</button>
+</div><!-- /app -->
+
+<div class="toast" id="toast"></div>
+
+<!-- ══════ ADD/EDIT TASK MODAL ══════ -->
+<div class="modal-overlay" id="taskModal">
+  <div class="modal">
+    <div class="modal-title"><span id="taskModalTitle">Ongeza Task</span></div>
+    <div class="form-group">
+      <label class="form-label-m">Jina la Task / Task Name *</label>
+      <input type="text" class="form-input-m" id="taskName" placeholder="Andika jina la task..." />
+    </div>
+    <div class="form-row-m">
+      <div class="form-group">
+        <label class="form-label-m">Wakati / Time</label>
+        <input type="time" class="form-input-m" id="taskTime" />
+      </div>
+      <div class="form-group">
+        <label class="form-label-m">Status *</label>
+        <select class="form-select-m" id="taskStatus" onchange="toggleReason()">
+          <option value="pending">⏳ Inasubiri / Pending</option>
+          <option value="done">✓ Imekamilika / Done</option>
+          <option value="skipped">✗ Ilirukwa / Skipped</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label-m">Brand</label>
+      <select class="form-select-m" id="taskBrand">
+        <option value="Coach Ram">🎓 Coach Ram</option>
+        <option value="Ramgrapher">📸 Ramgrapher</option>
+        <option value="Rampause">🌙 Rampause</option>
+        <option value="other">✏️ Nyingine / Other</option>
+      </select>
+    </div>
+    <div class="form-group" id="brandOtherGroup" style="display:none">
+      <label class="form-label-m">Jina la Brand / Custom Brand</label>
+      <input type="text" class="form-input-m" id="taskBrandOther" placeholder="Weka jina la brand..." />
+    </div>
+    <div class="form-group reason-group" id="reasonGroup">
+      <label class="form-label-m">Sababu / Reason</label>
+      <input type="text" class="form-input-m" id="taskReason" placeholder="Kwa nini haikufanyika?" />
+    </div>
+    <div class="form-group">
+      <label class="form-label-m">Maelezo / Notes</label>
+      <textarea class="form-textarea-m" id="taskNotes" placeholder="Maelezo ya ziada (si lazima)..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeTaskModal()">Funga / Close</button>
+      <button class="btn btn-primary" id="saveTaskBtn" onclick="saveTask()">💾 Hifadhi / Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ PIN MODAL ══════ -->
+<div class="modal-overlay" id="pinModal">
+  <div class="modal" style="max-width:300px;text-align:center">
+    <div class="modal-title" style="text-align:center">🔐 <span>Weka PIN / Enter PIN</span></div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:10px" id="pinModalDesc">Weka PIN yako.</p>
+    <div class="pin-display">
+      <div class="pin-dot" id="pd0">_</div>
+      <div class="pin-dot" id="pd1">_</div>
+      <div class="pin-dot" id="pd2">_</div>
+      <div class="pin-dot" id="pd3">_</div>
+    </div>
+    <div class="pin-error" id="pinError">PIN si sahihi! / Incorrect PIN</div>
+    <div class="pin-keypad">
+      <button class="pin-key" onclick="pinInput('1')">1</button>
+      <button class="pin-key" onclick="pinInput('2')">2</button>
+      <button class="pin-key" onclick="pinInput('3')">3</button>
+      <button class="pin-key" onclick="pinInput('4')">4</button>
+      <button class="pin-key" onclick="pinInput('5')">5</button>
+      <button class="pin-key" onclick="pinInput('6')">6</button>
+      <button class="pin-key" onclick="pinInput('7')">7</button>
+      <button class="pin-key" onclick="pinInput('8')">8</button>
+      <button class="pin-key" onclick="pinInput('9')">9</button>
+      <button class="pin-key zero" onclick="pinInput('0')">0</button>
+      <button class="pin-key del" onclick="pinDel()">⌫</button>
+    </div>
+    <div class="modal-actions" style="justify-content:center;margin-top:14px">
+      <button class="btn btn-ghost btn-sm" onclick="closePinModal()">Funga / Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ SETTINGS MODAL ══════ -->
+<div class="modal-overlay" id="settingsModal">
+  <div class="modal" style="max-width:380px">
+    <div class="modal-title">⚙️ <span>Mipangilio / Settings</span></div>
+    <div class="form-group">
+      <label class="form-label-m">Jina Kamili / Full Name</label>
+      <input type="text" class="form-input-m" id="settingName" placeholder="Jina lako..." />
+    </div>
+    <div class="form-group">
+      <label class="form-label-m">Barua Pepe / Email</label>
+      <input type="text" class="form-input-m" id="settingEmail" disabled style="opacity:.5;cursor:not-allowed" />
+    </div>
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:14px">
+      <div style="font-size:11px;color:var(--gold);font-weight:600;margin-bottom:8px">🔐 Badilisha PIN / Change PIN</div>
+      <div class="form-group">
+        <label class="form-label-m">PIN ya Sasa / Current PIN</label>
+        <input type="password" class="form-input-m" id="currentPin" placeholder="PIN ya sasa..." maxlength="4" />
+      </div>
+      <div class="form-group">
+        <label class="form-label-m">PIN Mpya / New PIN</label>
+        <input type="password" class="form-input-m" id="newPin" placeholder="Nambari 4..." maxlength="4" />
+      </div>
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-label-m">Thibitisha PIN / Confirm</label>
+        <input type="password" class="form-input-m" id="confirmPin" placeholder="Rudia PIN mpya..." maxlength="4" />
+      </div>
+      <div id="pinChangeMsg" style="font-size:12px;margin-top:8px"></div>
+    </div>
+    <div style="background:rgba(224,85,85,.1);border:1px solid rgba(224,85,85,.2);border-radius:10px;padding:12px;margin-bottom:14px">
+      <div style="font-size:11px;color:var(--danger);font-weight:600;margin-bottom:8px">⚠️ Danger Zone</div>
+      <button class="btn btn-danger btn-sm" onclick="clearAllData()">🗑️ Futa Data Yote / Clear All Data</button>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeSettings()">Funga</button>
+      <button class="btn btn-primary" onclick="saveSettings()">💾 Hifadhi / Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════
+//  ⚙️  CONFIGURATION — BADILISHA HAPA / CHANGE HERE
+// ════════════════════════════════════════════════════════
+const SUPABASE_URL  = 'https://nhwrnjyhfyccnxstqitr.supabase.co';        // e.g. https://xxxx.supabase.co
+const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5od3JuanloZnljY254c3RxaXRyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1MjA0MzEsImV4cCI6MjA5MjA5NjQzMX0.FmOMgNV3hra7z8osTw23wdFyw6kaiAAgDOsjw_yRMJo';   // eyJ...
+
+// ════════════════════════════════════════════════════════
+//  SUPABASE INIT
+// ════════════════════════════════════════════════════════
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ════════════════════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════════════════════
+let currentUser = null;
+let userProfile = null;
+let currentTab  = 'today';
+let historyDate = new Date();
+let editingTaskId   = null;
+let editingDateKey  = null;
+let pinCallback     = null;
+let pinBuffer       = '';
+let charts          = {};
+let notesTimer      = null;
+let todayTasksCache = [];
+
+const BRAND_COLORS = {'Coach Ram':'#7c3aed','Ramgrapher':'#c9a84c','Rampause':'#4a4aaa'};
+const SW_DAYS  = ['Jumapili','Jumatatu','Jumanne','Jumatano','Alhamisi','Ijumaa','Jumamosi'];
+const SW_MONTHS= ['Januari','Februari','Machi','Aprili','Mei','Juni','Julai','Agosti','Septemba','Oktoba','Novemba','Desemba'];
+
+// ════════════════════════════════════════════════════════
+//  UTILS
+// ════════════════════════════════════════════════════════
+const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const getTodayKey = () => new Date().toISOString().split('T')[0];
+const dateKey = d => d.toISOString().split('T')[0];
+const genId = () => Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+
+let toastTimer;
+function showToast(msg) {
+  clearTimeout(toastTimer);
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ════════════════════════════════════════════════════════
+//  AUTH UI
+// ════════════════════════════════════════════════════════
+function switchAuthTab(tab) {
+  document.getElementById('loginForm').style.display   = tab==='login'    ? '' : 'none';
+  document.getElementById('registerForm').style.display= tab==='register' ? '' : 'none';
+  document.getElementById('tabLogin').classList.toggle('active',    tab==='login');
+  document.getElementById('tabRegister').classList.toggle('active', tab==='register');
+}
+
+function togglePw(id, btn) {
+  const inp = document.getElementById(id);
+  const show = inp.type === 'password';
+  inp.type = show ? 'text' : 'password';
+  btn.textContent = show ? '🙈' : '👁';
+}
+
+// ── Timeout helper ──
+function withTimeout(promise, ms) {
+  return new Promise((resolve, reject) => {
+    const t = setTimeout(() => reject(new Error('TIMEOUT')), ms);
+    promise.then(v => { clearTimeout(t); resolve(v); })
+           .catch(e => { clearTimeout(t); reject(e); });
+  });
+}
+
+function resetBtn(id, label) {
+  const btn = document.getElementById(id);
+  btn.disabled = false;
+  btn.innerHTML = '<span>' + label + '</span>';
+}
+
+function setBtnLoading(id) {
+  const btn = document.getElementById(id);
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div>';
+}
+
+async function doLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const pw    = document.getElementById('loginPw').value;
+  const errEl = document.getElementById('loginError');
+  errEl.classList.remove('show');
+  if (!email || !pw) { errEl.textContent='Jaza sehemu zote / Fill all fields'; errEl.classList.add('show'); return; }
+  setBtnLoading('loginBtn');
+  try {
+    const { error } = await withTimeout(sb.auth.signInWithPassword({ email, password: pw }), 12000);
+    if (error) {
+      errEl.textContent = 'Barua pepe au nywila si sahihi / Email or password incorrect';
+      errEl.classList.add('show');
+    }
+    // success → onAuthStateChange itashughulikia
+  } catch(err) {
+    errEl.textContent = err.message === 'TIMEOUT'
+      ? '⏳ Seva haikujibu. Angalia: supabase.com/dashboard → Restore project, kisha jaribu tena.'
+      : 'Kosa la mtandao / Network error: ' + err.message;
+    errEl.classList.add('show');
+  } finally {
+    resetBtn('loginBtn', 'Ingia / Sign In');
+  }
+}
+
+async function doRegister() {
+  const name = document.getElementById('regName').value.trim();
+  const email= document.getElementById('regEmail').value.trim();
+  const pw   = document.getElementById('regPw').value;
+  const pw2  = document.getElementById('regPw2').value;
+  const errEl= document.getElementById('registerError');
+  errEl.classList.remove('show');
+  if (!name||!email||!pw||!pw2) { errEl.textContent='Jaza sehemu zote / Fill all fields'; errEl.classList.add('show'); return; }
+  if (pw.length < 6) { errEl.textContent='Nywila lazima iwe na herufi 6+ / Password must be 6+ characters'; errEl.classList.add('show'); return; }
+  if (pw !== pw2) { errEl.textContent='Nywila hazilingani / Passwords do not match'; errEl.classList.add('show'); return; }
+  setBtnLoading('registerBtn');
+  try {
+    const { error } = await withTimeout(sb.auth.signUp({ email, password: pw, options: { data: { full_name: name } } }), 12000);
+    if (error) {
+      errEl.textContent = error.message.includes('already') ? 'Barua pepe hii tayari ipo / Email already registered' : 'Kosa: '+error.message;
+      errEl.classList.add('show');
+    } else {
+      showAuthScreen();
+      switchAuthTab('login');
+      showToast('✓ Akaunti imetengenezwa! Ingia sasa / Account created! Sign in now.');
+    }
+  } catch(err) {
+    errEl.textContent = err.message === 'TIMEOUT'
+      ? '⏳ Seva haikujibu. Angalia mtandao wako na ujaribu tena.'
+      : 'Kosa: ' + err.message;
+    errEl.classList.add('show');
+  } finally {
+    resetBtn('registerBtn', 'Sajili / Register');
+  }
+}
+
+async function doSignOut() {
+  appInitialized = false;
+  await sb.auth.signOut();
+}
+
+// ════════════════════════════════════════════════════════
+//  AUTH STATE LISTENER
+// ════════════════════════════════════════════════════════
+let appInitialized = false;
+
+sb.auth.onAuthStateChange(async (event, session) => {
+  if (session?.user) {
+    currentUser = session.user;
+    try { await loadProfile(); } catch(e) { console.warn('Profile load failed:', e); }
+    showApp();
+  } else {
+    currentUser = null;
+    userProfile = null;
+    appInitialized = false;
+    showAuthScreen();
+  }
+});
+
+function showAuthScreen() {
+  document.getElementById('authScreen').style.display = 'flex';
+  document.getElementById('app').classList.remove('visible');
+  resetBtn('loginBtn', 'Ingia / Sign In');
+}
+
+function showApp() {
+  if (appInitialized) return;
+  appInitialized = true;
+  document.getElementById('authScreen').style.display = 'none';
+  document.getElementById('app').classList.add('visible');
+  updateHeaderDate();
+  populateReportWeeks();
+  switchTab('today');
+  setInterval(updateHeaderDate, 60000);
+  // Offline detection
+  window.addEventListener('online',  () => document.getElementById('offlineBanner').classList.remove('show'));
+  window.addEventListener('offline', () => document.getElementById('offlineBanner').classList.add('show'));
+  if (!navigator.onLine) document.getElementById('offlineBanner').classList.add('show');
+}
+
+// ════════════════════════════════════════════════════════
+//  PROFILE
+// ════════════════════════════════════════════════════════
+async function loadProfile() {
+  const { data } = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
+  userProfile = data;
+  const name  = userProfile?.full_name || currentUser.email.split('@')[0];
+  const email = currentUser.email;
+  const initials = name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('avatarInitials').textContent = initials;
+  document.getElementById('menuUserName').textContent   = name;
+  document.getElementById('menuUserEmail').textContent  = email;
+  document.getElementById('settingName').value  = name;
+  document.getElementById('settingEmail').value = email;
+}
+
+function getPin() { return userProfile?.pin || '1234'; }
+
+// ════════════════════════════════════════════════════════
+//  HEADER & DATE
+// ════════════════════════════════════════════════════════
+function updateHeaderDate() {
+  const now = new Date();
+  document.getElementById('headerDateStr').textContent  = `${now.getDate()} ${SW_MONTHS[now.getMonth()]} ${now.getFullYear()}`;
+  document.getElementById('headerDayStr').textContent   = SW_DAYS[now.getDay()];
+  document.getElementById('todaySectionDate').textContent = `${SW_DAYS[now.getDay()]}, ${now.getDate()} ${SW_MONTHS[now.getMonth()]}`;
+}
+
+function toggleUserMenu() {
+  document.getElementById('userMenu').classList.toggle('open');
+}
+document.addEventListener('click', e => {
+  if (!document.getElementById('userAvatar').contains(e.target))
+    document.getElementById('userMenu').classList.remove('open');
+});
+
+// ════════════════════════════════════════════════════════
+//  TAB SWITCHING
+// ════════════════════════════════════════════════════════
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  document.getElementById('view-'+tab).classList.add('active');
+  document.getElementById('fabBtn').style.display = tab==='today' ? 'flex' : 'none';
+  currentTab = tab;
+  if (tab==='today')     renderToday();
+  if (tab==='history')   renderHistory();
+  if (tab==='dashboard') renderDashboard();
+  if (tab==='report')    renderReport();
+}
+
+// ════════════════════════════════════════════════════════
+//  TODAY VIEW
+// ════════════════════════════════════════════════════════
+async function renderToday() {
+  const key = getTodayKey();
+  showSkeletons('todayTaskList', 3);
+  const [tasks, note] = await Promise.all([fetchTasks(key), fetchNote(key)]);
+  todayTasksCache = tasks;
+  renderTaskList('todayTaskList', tasks, key, true);
+  updateProgressBar(tasks);
+  checkAlert(tasks);
+  document.getElementById('dailyNotesInput').value = note?.content || '';
+}
+
+async function fetchTasks(dateStr) {
+  if (!currentUser) return [];
+  const { data, error } = await sb.from('tasks')
+    .select('*').eq('user_id', currentUser.id).eq('task_date', dateStr)
+    .order('task_time', { ascending: true, nullsFirst: false });
+  if (error) { showToast('⚠️ Kosa la data / Data error'); return []; }
+  return data || [];
+}
+
+async function fetchNote(dateStr) {
+  if (!currentUser) return null;
+  const { data } = await sb.from('daily_notes')
+    .select('*').eq('user_id', currentUser.id).eq('note_date', dateStr).maybeSingle();
+  return data;
+}
+
+function showSkeletons(id, n) {
+  document.getElementById(id).innerHTML = Array(n).fill(0).map((_,i) =>
+    `<div class="skeleton skel-card" style="height:${i===n-1?52:72}px"></div>`).join('');
+}
+
+function renderTaskList(containerId, tasks, dk, canEdit) {
+  const el = document.getElementById(containerId);
+  if (!tasks || tasks.length===0) {
+    el.innerHTML = `<div class="empty-state"><div class="ei">📭</div><p>${canEdit&&dk===getTodayKey()?'Hakuna tasks leo. Bonyeza + kuongeza.<br><small style="color:var(--muted)">No tasks today. Tap + to add.</small>':'Hakuna tasks siku hii.'}</p></div>`;
+    return;
+  }
+  el.innerHTML = tasks.map(t => taskCardHTML(t, dk, canEdit)).join('');
+}
+
+function taskCardHTML(t, dk, canEdit) {
+  const bc = BRAND_COLORS[t.brand] || '#888';
+  const sb2 = t.status==='done'?'<span class="badge badge-done">✓ Done</span>':t.status==='skipped'?'<span class="badge badge-skipped">✗ Skipped</span>':'<span class="badge badge-pending">⏳ Pending</span>';
+  return `<div class="task-card ${t.status}" id="tc-${t.id}">
+    <div class="task-top">
+      <div class="task-name">${esc(t.name)}</div>
+      <div class="task-actions">
+        ${canEdit?`<button class="btn btn-ghost btn-icon btn-sm" onclick="editTask('${dk}','${t.id}')" title="Hariri">✏️</button>`:''}
+        <button class="btn btn-danger btn-icon btn-sm" onclick="confirmDelete('${dk}','${t.id}')" title="Futa">🗑️</button>
+      </div>
+    </div>
+    <div class="task-meta">
+      ${t.task_time?`<span class="badge badge-time">🕐 ${t.task_time}</span>`:''}
+      <span class="badge badge-brand" style="background:${bc}22;color:${bc}">${esc(t.brand)}</span>
+      ${sb2}
+    </div>
+    ${t.reason?`<div class="task-reason">💬 ${esc(t.reason)}</div>`:''}
+    ${t.notes?`<div class="task-reason" style="font-style:normal">📝 ${esc(t.notes)}</div>`:''}
+  </div>`;
+}
+
+function updateProgressBar(tasks) {
+  if (!tasks || tasks.length===0) {
+    document.getElementById('progressPct').textContent = '—';
+    document.getElementById('progressBar').style.width = '0%';
+    document.getElementById('doneCount').textContent    = '✓ 0 Imekamilika';
+    document.getElementById('pendingCount').textContent = '⏳ 0 Inasubiri';
+    document.getElementById('skippedCount').textContent = '✗ 0 Ilirukwa';
+    return;
+  }
+  const done    = tasks.filter(t=>t.status==='done').length;
+  const pending = tasks.filter(t=>t.status==='pending').length;
+  const skipped = tasks.filter(t=>t.status==='skipped').length;
+  const pct = Math.round(done/tasks.length*100);
+  document.getElementById('progressPct').textContent    = pct+'%';
+  document.getElementById('progressBar').style.width    = pct+'%';
+  document.getElementById('doneCount').textContent      = `✓ ${done} Imekamilika`;
+  document.getElementById('pendingCount').textContent   = `⏳ ${pending} Inasubiri`;
+  document.getElementById('skippedCount').textContent   = `✗ ${skipped} Ilirukwa`;
+}
+
+function checkAlert(tasks) {
+  const banner = document.getElementById('alertBanner');
+  if (!tasks || tasks.length===0) { banner.classList.remove('show'); return; }
+  const noReason = tasks.filter(t=>(t.status==='skipped'||t.status==='pending')&&!t.reason).length;
+  if (noReason>=3) {
+    document.getElementById('alertTitle').textContent = `⚠️ Onyo: Tasks ${noReason} hazina sababu!`;
+    document.getElementById('alertMsg').textContent   = `Tasks ${noReason} ni pending/skipped bila sababu. Weka sababu.`;
+    banner.classList.add('show');
+  } else { banner.classList.remove('show'); }
+}
+
+// ════════════════════════════════════════════════════════
+//  NOTES AUTO-SAVE
+// ════════════════════════════════════════════════════════
+function scheduleNoteSave() {
+  clearTimeout(notesTimer);
+  document.getElementById('notesSaveIndicator').textContent = 'Inahifadhi... / Saving...';
+  notesTimer = setTimeout(async () => {
+    const key  = currentTab==='today' ? getTodayKey() : dateKey(historyDate);
+    const text = document.getElementById('dailyNotesInput').value;
+    const { error } = await sb.from('daily_notes')
+      .upsert({ user_id: currentUser.id, note_date: key, content: text, updated_at: new Date().toISOString() },
+               { onConflict: 'user_id,note_date' });
+    document.getElementById('notesSaveIndicator').textContent = error ? '⚠️ Kosa la kuhifadhi' : '✓ Imehifadhiwa / Saved';
+    setTimeout(() => { document.getElementById('notesSaveIndicator').textContent=''; }, 2000);
+  }, 800);
+}
+
+// ════════════════════════════════════════════════════════
+//  HISTORY VIEW
+// ════════════════════════════════════════════════════════
+async function renderHistory() {
+  historyDate = historyDate || new Date();
+  const dk     = dateKey(historyDate);
+  const today  = getTodayKey();
+  const isToday= dk===today;
+  document.getElementById('historyDateStr').textContent = `${historyDate.getDate()} ${SW_MONTHS[historyDate.getMonth()]} ${historyDate.getFullYear()}`;
+  document.getElementById('historyDayStr').textContent  = SW_DAYS[historyDate.getDay()] + (isToday?' (Leo)':'');
+  document.getElementById('historyPicker').value = dk;
+  showSkeletons('historyTaskList', 2);
+  const [tasks, note] = await Promise.all([fetchTasks(dk), fetchNote(dk)]);
+  const done  = tasks.filter(t=>t.status==='done').length;
+  const total = tasks.length;
+  const pct   = total>0 ? Math.round(done/total*100) : 0;
+  document.getElementById('historyProgressBadge').innerHTML = total>0
+    ? `<span class="badge" style="background:rgba(124,58,237,.2);color:var(--purple-light)">${done}/${total} (${pct}%)</span>`
+    : `<span class="badge" style="background:var(--surface3);color:var(--muted)">Hakuna data</span>`;
+  renderTaskList('historyTaskList', tasks, dk, true);
+  document.getElementById('historyNotesText').textContent = note?.content || 'Hakuna maelezo kwa siku hii.';
+}
+
+function historyPrev() { historyDate.setDate(historyDate.getDate()-1); renderHistory(); }
+function historyNext() {
+  const next = new Date(historyDate); next.setDate(next.getDate()+1);
+  if (next <= new Date()) { historyDate=next; renderHistory(); }
+  else showToast('Hauwezi kwenda siku za mbeleni! / Cannot go to future dates.');
+}
+function historyPickDate() {
+  const val = document.getElementById('historyPicker').value;
+  if (val) { historyDate = new Date(val+'T12:00:00'); renderHistory(); }
+}
+
+// ════════════════════════════════════════════════════════
+//  DASHBOARD
+// ════════════════════════════════════════════════════════
+async function renderDashboard() {
+  if (!currentUser) return;
+  const today = getTodayKey();
+  const d14ago = new Date(); d14ago.setDate(d14ago.getDate()-13);
+  const { data: allTasks } = await sb.from('tasks')
+    .select('*').eq('user_id', currentUser.id)
+    .gte('task_date', dateKey(d14ago)).lte('task_date', today);
+  const tasks = allTasks || [];
+
+  // Group by date
+  const byDate = {};
+  tasks.forEach(t => { if(!byDate[t.task_date]) byDate[t.task_date]=[]; byDate[t.task_date].push(t); });
+
+  // 14 day keys
+  const days14 = [];
+  for(let i=13;i>=0;i--) { const d=new Date();d.setDate(d.getDate()-i);days14.push(dateKey(d)); }
+  const week7   = days14.slice(7);
+  const prevWeek= days14.slice(0,7);
+
+  // TODAY stats
+  const todayTasks = byDate[today]||[];
+  const todayDone  = todayTasks.filter(t=>t.status==='done').length;
+  const todayPct   = todayTasks.length ? Math.round(todayDone/todayTasks.length*100) : 0;
+  document.getElementById('statTodayPct').textContent = todayTasks.length ? todayPct+'%' : '—';
+
+  // WEEK stats
+  let wDone=0,wTotal=0;
+  week7.forEach(k=>{const dd=byDate[k]||[];wDone+=dd.filter(t=>t.status==='done').length;wTotal+=dd.length;});
+  document.getElementById('statWeekPct').textContent = wTotal ? Math.round(wDone/wTotal*100)+'%' : '—';
+
+  // STREAK
+  let streak=0;
+  for(let i=0;i<14;i++){
+    const d=new Date();d.setDate(d.getDate()-i);
+    const dd=byDate[dateKey(d)]||[];
+    if(dd.length>0&&dd.filter(t=>t.status==='done').length/dd.length>=0.5) streak++;
+    else break;
+  }
+  document.getElementById('statStreak').textContent = streak+'🔥';
+
+  // STREAK BAR
+  const sLabels=['S','J','J','J','A','I','J'];
+  document.getElementById('streakBar').innerHTML = days14.map((k,i)=>{
+    const d2=new Date();d2.setDate(d2.getDate()-(13-i));
+    const label=sLabels[d2.getDay()];
+    const dd=byDate[k]||[];
+    let cls='empty';
+    if(dd.length>0){const p=dd.filter(t=>t.status==='done').length/dd.length;cls=p>=.75?'good':p>=.25?'partial':'bad';}
+    return `<div class="streak-day ${cls}${k===today?' today':''}" title="${k}">${label}<br><span style="font-size:7px">${d2.getDate()}</span></div>`;
+  }).join('');
+
+  // COMPLETION CHART
+  const compLabels = week7.map(k=>{const d=new Date(k+'T12:00');return `${d.getDate()}/${d.getMonth()+1}`;});
+  const compData   = week7.map(k=>{const dd=byDate[k];if(!dd||!dd.length)return null;return Math.round(dd.filter(t=>t.status==='done').length/dd.length*100);});
+  if(charts.completion) charts.completion.destroy();
+  charts.completion = new Chart(document.getElementById('completionChart'),{type:'bar',data:{labels:compLabels,datasets:[{label:'%',data:compData,backgroundColor:compData.map(v=>v===null?'rgba(107,107,138,.3)':v>=75?'rgba(45,189,126,.6)':v>=50?'rgba(124,58,237,.6)':'rgba(224,156,58,.6)'),borderColor:compData.map(v=>v===null?'#6b6b8a':v>=75?'#2dbd7e':v>=50?'#9d5af5':'#e09c3a'),borderWidth:1,borderRadius:6}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{display:false}},scales:{y:{min:0,max:100,grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#6b6b8a',font:{size:10},callback:v=>v+'%'}},x:{grid:{display:false},ticks:{color:'#6b6b8a',font:{size:10}}}}}});
+
+  // BRAND CHART
+  const brandStats={};
+  tasks.forEach(t=>{if(!brandStats[t.brand])brandStats[t.brand]={done:0,total:0};brandStats[t.brand].total++;if(t.status==='done')brandStats[t.brand].done++;});
+  const bNames=Object.keys(brandStats);
+  const bColors=bNames.map(b=>BRAND_COLORS[b]||'#888');
+  if(charts.brand)charts.brand.destroy();
+  if(bNames.length>0){
+    charts.brand=new Chart(document.getElementById('brandChart'),{type:'doughnut',data:{labels:bNames,datasets:[{data:bNames.map(b=>brandStats[b].total),backgroundColor:bColors.map(c=>c+'cc'),borderColor:bColors,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:true,cutout:'65%',plugins:{legend:{display:false}}}});
+    document.getElementById('brandLegend').innerHTML=bNames.map((b,i)=>{const s=brandStats[b];const p=Math.round(s.done/s.total*100);return `<div style="margin-bottom:10px"><div style="display:flex;align-items:center;gap:6px;margin-bottom:3px"><div style="width:9px;height:9px;border-radius:50%;background:${bColors[i]};flex-shrink:0"></div><span style="color:var(--white);font-size:12px;font-weight:600">${esc(b)}</span></div><div style="font-size:10px;color:var(--muted)">${s.done}/${s.total} tasks · ${p}%</div><div class="mini-bar-track"><div class="mini-bar-fill" style="width:${p}%;background:${bColors[i]}"></div></div></div>`;}).join('');
+  } else {
+    document.getElementById('brandChart').parentElement.innerHTML='<div style="text-align:center;color:var(--muted);padding:20px;font-size:12px">Hakuna data ya kutosha / Not enough data</div>';
+  }
+
+  // NO-PROGRESS DAYS
+  const noProg=days14.filter(k=>{const dd=byDate[k];return !dd||!dd.length||dd.filter(t=>t.status==='done').length===0;});
+  const npEl=document.getElementById('noProgressContent');
+  if(noProg.length===0) npEl.innerHTML='<div style="color:var(--success);font-size:13px">🎉 Hongera! Siku zote 14 zina maendeleo!</div>';
+  else npEl.innerHTML=`<div style="font-size:12px;color:var(--danger);margin-bottom:8px">Siku ${noProg.length} bila maendeleo:</div><div style="display:flex;flex-wrap:wrap;gap:6px">${noProg.map(k=>{const d2=new Date(k+'T12:00');return `<span class="badge" style="background:rgba(224,85,85,.15);color:var(--danger)">${d2.getDate()}/${d2.getMonth()+1}</span>`;}).join('')}</div>`;
+
+  // WEEK COMPARISON
+  const brandAll=new Set(tasks.map(t=>t.brand));
+  const tbody=document.getElementById('weekCompBody');
+  tbody.innerHTML='';
+  if(brandAll.size===0){tbody.innerHTML='<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:16px">Hakuna data ya kutosha</td></tr>';}
+  else brandAll.forEach(b=>{
+    let pD=0,pT=0,cD=0,cT=0;
+    prevWeek.forEach(k=>{(byDate[k]||[]).filter(t=>t.brand===b).forEach(t=>{pT++;if(t.status==='done')pD++;});});
+    week7.forEach(k=>{(byDate[k]||[]).filter(t=>t.brand===b).forEach(t=>{cT++;if(t.status==='done')cD++;});});
+    const pp=pT?Math.round(pD/pT*100):0,cp=cT?Math.round(cD/cT*100):0,diff=cp-pp;
+    const cls=diff>0?'trend-up':diff<0?'trend-down':'trend-same';
+    const icon=diff>0?'▲':diff<0?'▼':'→';
+    tbody.innerHTML+=`<tr><td style="color:var(--white);font-weight:600">${esc(b)}</td><td>${pT?pp+'%':'—'}</td><td>${cT?cp+'%':'—'}</td><td class="${cls}">${icon} ${diff!==0?Math.abs(diff)+'%':''}</td></tr>`;
+  });
+}
+
+// ════════════════════════════════════════════════════════
+//  REPORT VIEW
+// ════════════════════════════════════════════════════════
+function populateReportWeeks() {
+  const sel=document.getElementById('reportWeekSelect');
+  sel.innerHTML='';
+  for(let w=0;w<8;w++){
+    const mon=new Date();mon.setDate(mon.getDate()-mon.getDay()+1-w*7);
+    const sun=new Date(mon);sun.setDate(sun.getDate()+6);
+    const fmt=d=>`${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+    const opt=document.createElement('option');
+    opt.value=dateKey(mon);
+    opt.textContent=`Wiki: ${fmt(mon)} — ${fmt(sun)}${w===0?' (Hii/This)':''}`;
+    sel.appendChild(opt);
+  }
+}
+
+async function renderReport() {
+  const mondayStr=document.getElementById('reportWeekSelect').value;
+  if(!mondayStr||!currentUser)return;
+  const monday=new Date(mondayStr+'T12:00:00');
+  const sunday=new Date(monday);sunday.setDate(sunday.getDate()+6);
+  const { data:allTasks } = await sb.from('tasks').select('*').eq('user_id',currentUser.id)
+    .gte('task_date',mondayStr).lte('task_date',dateKey(sunday));
+  const { data:allNotes } = await sb.from('daily_notes').select('*').eq('user_id',currentUser.id)
+    .gte('note_date',mondayStr).lte('note_date',dateKey(sunday));
+  const byDate={};(allTasks||[]).forEach(t=>{if(!byDate[t.task_date])byDate[t.task_date]=[];byDate[t.task_date].push(t);});
+  const noteByDate={};(allNotes||[]).forEach(n=>{noteByDate[n.note_date]=n.content;});
+  const dayNames=['Jumatatu','Jumanne','Jumatano','Alhamisi','Ijumaa','Jumamosi','Jumapili'];
+  let html='',wDone=0,wTotal=0;
+  for(let i=0;i<7;i++){
+    const d=new Date(monday);d.setDate(d.getDate()+i);
+    const dk=dateKey(d);const dayTasks=byDate[dk]||[];
+    const done=dayTasks.filter(t=>t.status==='done').length;
+    const total=dayTasks.length;
+    wDone+=done;wTotal+=total;
+    const pct=total>0?Math.round(done/total*100):0;
+    const pc=pct>=75?'var(--success)':pct>=50?'var(--purple-light)':total>0?'var(--warning)':'var(--muted)';
+    html+=`<div class="report-day"><div class="report-day-header"><div class="report-day-name">${dayNames[i]} — ${d.getDate()}/${d.getMonth()+1}</div><div>${total>0?`<span class="badge" style="background:${pc}22;color:${pc}">${done}/${total} · ${pct}%</span>`:'<span class="badge badge-time">Hakuna data</span>'}</div></div>`;
+    if(dayTasks.length>0) html+=dayTasks.map(t=>`<div class="report-task-row"><div class="status-dot ${t.status}"></div><span style="flex:1;font-size:12px">${esc(t.name)}</span>${t.task_time?`<span style="font-size:10px;color:var(--muted)">${t.task_time}</span>`:''}<span class="badge badge-brand" style="font-size:9px">${esc(t.brand)}</span></div>${t.reason?`<div style="padding:2px 0 2px 18px;font-size:10px;color:var(--muted);font-style:italic">💬 ${esc(t.reason)}</div>`:''}`).join('');
+    else html+=`<div style="font-size:11px;color:var(--muted);padding:4px 0">Hakuna tasks zilizorekodiwa.</div>`;
+    if(noteByDate[dk]) html+=`<div style="margin-top:8px;padding:8px;background:var(--surface2);border-radius:7px;font-size:11px;color:var(--muted)">📝 ${esc(noteByDate[dk])}</div>`;
+    html+=`</div>`;
+  }
+  const wPct=wTotal>0?Math.round(wDone/wTotal*100):0;
+  document.getElementById('reportContent').innerHTML=`<div class="chart-card" style="margin-bottom:14px"><div class="chart-title">📊 Muhtasari wa Wiki / Weekly Summary</div><div class="stats-row" style="margin-bottom:0"><div class="stat-card"><div class="stat-value">${wTotal}</div><div class="stat-label">Jumla</div></div><div class="stat-card"><div class="stat-value">${wDone}</div><div class="stat-label">Zilizokamilika</div></div><div class="stat-card"><div class="stat-value">${wTotal?wPct+'%':'—'}</div><div class="stat-label">Completion</div></div></div></div><div style="margin-bottom:10px"><div class="section-title">📅 Ratiba ya Wiki / Weekly Schedule</div></div>${html}`;
+}
+
+// ════════════════════════════════════════════════════════
+//  ADD / EDIT TASK
+// ════════════════════════════════════════════════════════
+function openAddTask() {
+  editingTaskId  = null;
+  editingDateKey = getTodayKey();
+  document.getElementById('taskModalTitle').textContent = 'Ongeza Task Mpya';
+  document.getElementById('taskName').value      = '';
+  document.getElementById('taskTime').value      = '';
+  document.getElementById('taskStatus').value    = 'pending';
+  document.getElementById('taskBrand').value     = 'Coach Ram';
+  document.getElementById('taskBrandOther').value= '';
+  document.getElementById('taskReason').value    = '';
+  document.getElementById('taskNotes').value     = '';
+  document.getElementById('brandOtherGroup').style.display='none';
+  toggleReason();
+  document.getElementById('taskModal').classList.add('open');
+  setTimeout(()=>document.getElementById('taskName').focus(),100);
+}
+
+async function editTask(dk, tid) {
+  showSkeletons('todayTaskList',1);
+  const { data:tasks } = await sb.from('tasks').select('*').eq('id',tid).single();
+  const t = tasks;
+  if(!t)return;
+  editingTaskId  = tid;
+  editingDateKey = dk;
+  document.getElementById('taskModalTitle').textContent = 'Hariri Task / Edit Task';
+  document.getElementById('taskName').value   = t.name;
+  document.getElementById('taskTime').value   = t.task_time||'';
+  document.getElementById('taskStatus').value = t.status;
+  const knownBrands=['Coach Ram','Ramgrapher','Rampause'];
+  if(knownBrands.includes(t.brand)){
+    document.getElementById('taskBrand').value='';
+    document.getElementById('taskBrand').value=t.brand;
+    document.getElementById('brandOtherGroup').style.display='none';
+  } else {
+    document.getElementById('taskBrand').value='other';
+    document.getElementById('taskBrandOther').value=t.brand;
+    document.getElementById('brandOtherGroup').style.display='block';
+  }
+  document.getElementById('taskReason').value = t.reason||'';
+  document.getElementById('taskNotes').value  = t.notes||'';
+  toggleReason();
+  // Re-render the list
+  if(editingDateKey===getTodayKey()) renderToday(); else renderHistory();
+  document.getElementById('taskModal').classList.add('open');
+}
+
+document.getElementById('taskBrand').addEventListener('change',function(){
+  document.getElementById('brandOtherGroup').style.display=this.value==='other'?'block':'none';
+});
+
+function toggleReason(){
+  const s=document.getElementById('taskStatus').value;
+  document.getElementById('reasonGroup').classList.toggle('visible',s==='skipped'||s==='pending');
+}
+
+function closeTaskModal(){ document.getElementById('taskModal').classList.remove('open'); }
+
+async function saveTask() {
+  const name = document.getElementById('taskName').value.trim();
+  if(!name){ showToast('Tafadhali weka jina la task! / Task name required.'); return; }
+  const brandVal = document.getElementById('taskBrand').value;
+  const brand    = brandVal==='other'?(document.getElementById('taskBrandOther').value.trim()||'Nyingine'):brandVal;
+  const saveBtn  = document.getElementById('saveTaskBtn');
+  saveBtn.disabled=true; saveBtn.innerHTML='<div class="spinner"></div>';
+
+  const payload = {
+    user_id:    currentUser.id,
+    name,
+    task_time:  document.getElementById('taskTime').value||null,
+    brand,
+    status:     document.getElementById('taskStatus').value,
+    reason:     document.getElementById('taskReason').value.trim()||null,
+    notes:      document.getElementById('taskNotes').value.trim()||null,
+    task_date:  editingDateKey,
+  };
+
+  let error;
+  if(editingTaskId) {
+    ({ error } = await sb.from('tasks').update({...payload, updated_at: new Date().toISOString()}).eq('id', editingTaskId));
+  } else {
+    ({ error } = await sb.from('tasks').insert(payload));
+  }
+
+  saveBtn.disabled=false; saveBtn.innerHTML='💾 Hifadhi / Save';
+  if(error){ showToast('⚠️ Kosa la kuhifadhi / Save error: '+error.message); return; }
+  closeTaskModal();
+  if(editingDateKey===getTodayKey()) renderToday(); else renderHistory();
+  showToast(editingTaskId?'✓ Task imesasishwa / Task updated.':'✓ Task imeongezwa / Task added.');
+}
+
+// ════════════════════════════════════════════════════════
+//  DELETE
+// ════════════════════════════════════════════════════════
+function confirmDelete(dk, tid) {
+  pinCallback = () => doDelete(dk, tid);
+  document.getElementById('pinModalDesc').textContent = 'Weka PIN yako ili kufuta task hii. / Enter PIN to delete this task.';
+  openPinModal();
+}
+
+async function doDelete(dk, tid) {
+  const { error } = await sb.from('tasks').delete().eq('id', tid);
+  if(error){ showToast('⚠️ Kosa la kufuta / Delete error'); return; }
+  if(dk===getTodayKey()) renderToday(); else renderHistory();
+  showToast('🗑️ Task imefutwa / Task deleted.');
+}
+
+// ════════════════════════════════════════════════════════
+//  PIN MODAL
+// ════════════════════════════════════════════════════════
+function openPinModal(){ pinBuffer=''; updatePinDisplay(); document.getElementById('pinError').classList.remove('show'); document.getElementById('pinModal').classList.add('open'); }
+function closePinModal(){ document.getElementById('pinModal').classList.remove('open'); pinBuffer=''; }
+function pinInput(d){ if(pinBuffer.length>=4)return; pinBuffer+=d; updatePinDisplay(); if(pinBuffer.length===4) setTimeout(checkPin,150); }
+function pinDel(){ pinBuffer=pinBuffer.slice(0,-1); updatePinDisplay(); document.getElementById('pinError').classList.remove('show'); }
+function updatePinDisplay(){ for(let i=0;i<4;i++){ const el=document.getElementById('pd'+i); if(i<pinBuffer.length){el.textContent='●';el.classList.add('filled');}else{el.textContent='_';el.classList.remove('filled');}}}
+function checkPin(){
+  if(pinBuffer===getPin()){ closePinModal(); if(pinCallback){pinCallback();pinCallback=null;} }
+  else { document.getElementById('pinError').classList.add('show'); pinBuffer=''; updatePinDisplay(); setTimeout(()=>document.getElementById('pinError').classList.remove('show'),2000); }
+}
+
+// ════════════════════════════════════════════════════════
+//  SETTINGS
+// ════════════════════════════════════════════════════════
+function openSettings(){ document.getElementById('settingsModal').classList.add('open'); }
+function closeSettings(){ document.getElementById('settingsModal').classList.remove('open'); }
+
+async function saveSettings(){
+  const name = document.getElementById('settingName').value.trim();
+  const cur  = document.getElementById('currentPin').value;
+  const nw   = document.getElementById('newPin').value;
+  const cf   = document.getElementById('confirmPin').value;
+  const msg  = document.getElementById('pinChangeMsg');
+  msg.textContent='';
+
+  const updates = {};
+  if(name) updates.full_name = name;
+
+  // PIN change (optional)
+  if(cur||nw||cf){
+    if(cur!==getPin()){ msg.style.color='var(--danger)'; msg.textContent='PIN ya sasa si sahihi! / Current PIN incorrect.'; return; }
+    if(!/^\d{4}$/.test(nw)){ msg.style.color='var(--danger)'; msg.textContent='PIN lazima iwe nambari 4! / PIN must be 4 digits.'; return; }
+    if(nw!==cf){ msg.style.color='var(--danger)'; msg.textContent='PIN mpya hazilingani! / PINs do not match.'; return; }
+    updates.pin = nw;
+  }
+
+  if(Object.keys(updates).length>0){
+    const { error } = await sb.from('profiles').update(updates).eq('id', currentUser.id);
+    if(error){ msg.style.color='var(--danger)'; msg.textContent='Kosa la kuhifadhi / Save error'; return; }
+    await loadProfile();
+  }
+  msg.style.color='var(--success)'; msg.textContent='✓ Imehifadhiwa / Saved!';
+  document.getElementById('currentPin').value=''; document.getElementById('newPin').value=''; document.getElementById('confirmPin').value='';
+  setTimeout(()=>{ msg.textContent=''; closeSettings(); },1500);
+}
+
+async function clearAllData(){
+  pinCallback = async () => {
+    if(confirm('Una uhakika? Data YOTE itafutwa!\nAre you sure? ALL data will be permanently deleted!')){
+      await Promise.all([
+        sb.from('tasks').delete().eq('user_id', currentUser.id),
+        sb.from('daily_notes').delete().eq('user_id', currentUser.id)
+      ]);
+      closeSettings();
+      renderToday();
+      showToast('🗑️ Data yote imefutwa / All data cleared.');
+    }
+  };
+  document.getElementById('pinModalDesc').textContent='Weka PIN ili kufuta data yote. / Enter PIN to clear all data.';
+  closeSettings();
+  openPinModal();
+}
+
+// ════════════════════════════════════════════════════════
+//  KEYBOARD & MODAL CLOSE
+// ════════════════════════════════════════════════════════
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', e => { if(e.target===el){ el.classList.remove('open'); pinBuffer=''; } });
+});
+document.addEventListener('keydown', e => {
+  if(document.getElementById('pinModal').classList.contains('open')){
+    if(/^[0-9]$/.test(e.key)) pinInput(e.key);
+    if(e.key==='Backspace') pinDel();
+    if(e.key==='Escape') closePinModal();
+  } else if(e.key==='Escape'){
+    document.querySelectorAll('.modal-overlay.open').forEach(m=>m.classList.remove('open'));
+  }
+});
+// Enter key on auth forms
+document.getElementById('loginPw').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+document.getElementById('regPw2').addEventListener('keydown',  e => { if(e.key==='Enter') doRegister(); });
+</script>
+</body>
+</html>
