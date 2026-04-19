@@ -760,15 +760,17 @@ function setBtnLoading(id) {
 }
 
 async function doLogin() {
-  const email = document.getElementById('loginEmail').value.trim();
-  const pw    = document.getElementById('loginPw').value;
+  const email = document.getElementById('loginEmail')?.value?.trim();
+  const pw    = document.getElementById('loginPw')?.value;
   const errEl = document.getElementById('loginError');
 
-  errEl.classList.remove('show');
+  if (errEl) errEl.classList.remove('show');
 
   if (!email || !pw) {
-    errEl.textContent='Jaza sehemu zote / Fill all fields';
-    errEl.classList.add('show');
+    if (errEl) {
+      errEl.textContent = 'Jaza sehemu zote / Fill all fields';
+      errEl.classList.add('show');
+    }
     return;
   }
 
@@ -781,27 +783,35 @@ async function doLogin() {
     );
 
     if (error) {
-      errEl.textContent = 'Barua pepe au nywila si sahihi / Email or password incorrect';
-      errEl.classList.add('show');
+      if (errEl) {
+        errEl.textContent = 'Barua pepe au nywila si sahihi / Email or password incorrect';
+        errEl.classList.add('show');
+      }
       return;
     }
 
-    // ✅ HII NDIO FIX KUU
     console.log("LOGIN SUCCESS:", data.user);
 
-    // fungua app moja kwa moja
-    document.getElementById('loginSection').style.display = 'none';
-    document.getElementById('appSection').style.display = 'block';
+    // ✅ SAFE NAVIGATION (HAICRASH)
+    const loginSec = document.getElementById('loginSection');
+    const appSec   = document.getElementById('appSection');
 
-    // optional: load data zako hapa
-    await loadProfile();
+    if (loginSec) loginSec.style.display = 'none';
+    if (appSec) appSec.style.display = 'block';
+
+    // optional safe load
+    if (typeof loadProfile === 'function') {
+      await loadProfile();
+    }
 
   } catch(err) {
-    errEl.textContent = err.message === 'TIMEOUT'
-      ? '⏳ Seva haikujibu. Angalia Supabase dashboard → Restore project.'
-      : 'Kosa la mtandao: ' + err.message;
+    if (errEl) {
+      errEl.textContent = err.message === 'TIMEOUT'
+        ? '⏳ Seva haikujibu. Angalia Supabase dashboard → Restore project.'
+        : 'Kosa la mtandao: ' + err.message;
 
-    errEl.classList.add('show');
+      errEl.classList.add('show');
+    }
 
   } finally {
     resetBtn('loginBtn', 'Ingia / Sign In');
