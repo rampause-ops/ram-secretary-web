@@ -849,27 +849,21 @@ async function doRegister() {
 }
 
 async function doSignOut() {
-  appInitialized = false;
-  await sb.auth.signOut();
-}
+  try {
+    appInitialized = false;
 
-// ════════════════════════════════════════════════════════
-//  AUTH STATE LISTENER
-// ════════════════════════════════════════════════════════
-let appInitialized = false;
+    await sb.auth.signOut();
 
-sb.auth.onAuthStateChange(async (event, session) => {
-  if (session?.user) {
-    currentUser = session.user;
-    try { await loadProfile(); } catch(e) { console.warn('Profile load failed:', e); }
-    showApp();
-  } else {
     currentUser = null;
     userProfile = null;
-    appInitialized = false;
+
     showAuthScreen();
+
+    console.log("Logged out successfully");
+  } catch (err) {
+    console.error("Logout error:", err);
   }
-});
+}
 
 function showAuthScreen() {
   document.getElementById('authScreen').style.display = 'flex';
