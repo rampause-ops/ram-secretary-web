@@ -763,26 +763,50 @@ async function doLogin() {
   const email = document.getElementById('loginEmail').value.trim();
   const pw    = document.getElementById('loginPw').value;
   const errEl = document.getElementById('loginError');
+
   errEl.classList.remove('show');
-  if (!email || !pw) { errEl.textContent='Jaza sehemu zote / Fill all fields'; errEl.classList.add('show'); return; }
+
+  if (!email || !pw) {
+    errEl.textContent='Jaza sehemu zote / Fill all fields';
+    errEl.classList.add('show');
+    return;
+  }
+
   setBtnLoading('loginBtn');
+
   try {
-    const { error } = await withTimeout(sb.auth.signInWithPassword({ email, password: pw }), 12000);
+    const { data, error } = await withTimeout(
+      sb.auth.signInWithPassword({ email, password: pw }),
+      12000
+    );
+
     if (error) {
       errEl.textContent = 'Barua pepe au nywila si sahihi / Email or password incorrect';
       errEl.classList.add('show');
+      return;
     }
-    // success → onAuthStateChange itashughulikia
+
+    // ✅ HII NDIO FIX KUU
+    console.log("LOGIN SUCCESS:", data.user);
+
+    // fungua app moja kwa moja
+    document.getElementById('loginSection').style.display = 'none';
+    document.getElementById('appSection').style.display = 'block';
+
+    // optional: load data zako hapa
+    await loadProfile();
+
   } catch(err) {
     errEl.textContent = err.message === 'TIMEOUT'
-      ? '⏳ Seva haikujibu. Angalia: supabase.com/dashboard → Restore project, kisha jaribu tena.'
-      : 'Kosa la mtandao / Network error: ' + err.message;
+      ? '⏳ Seva haikujibu. Angalia Supabase dashboard → Restore project.'
+      : 'Kosa la mtandao: ' + err.message;
+
     errEl.classList.add('show');
+
   } finally {
     resetBtn('loginBtn', 'Ingia / Sign In');
   }
 }
-
 async function doRegister() {
   const name = document.getElementById('regName').value.trim();
   const email= document.getElementById('regEmail').value.trim();
