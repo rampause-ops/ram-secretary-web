@@ -890,16 +890,49 @@ function showApp() {
 //  PROFILE
 // ════════════════════════════════════════════════════════
 async function loadProfile() {
-  const { data } = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
-  userProfile = data;
-  const name  = userProfile?.full_name || currentUser.email.split('@')[0];
-  const email = currentUser.email;
-  const initials = name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
-  document.getElementById('avatarInitials').textContent = initials;
-  document.getElementById('menuUserName').textContent   = name;
-  document.getElementById('menuUserEmail').textContent  = email;
-  document.getElementById('settingName').value  = name;
-  document.getElementById('settingEmail').value = email;
+
+  // 🛑 STOP kama hakuna user
+  if (!currentUser || !currentUser.id) {
+    console.warn("User haipo bado");
+    return;
+  }
+
+  try {
+    const { data, error } = await sb
+      .from('profiles')
+      .select('*')
+      .eq('id', currentUser.id)
+      .single();
+
+    if (error) {
+      console.warn("Profile fetch error:", error.message);
+      return;
+    }
+
+    userProfile = data;
+
+    const name  = userProfile?.full_name || currentUser.email.split('@')[0];
+    const email = currentUser.email;
+    const initials = name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+
+    // 🛡️ SAFE UI UPDATE
+    const avatar = document.getElementById('avatarInitials');
+    const nameEl = document.getElementById('menuUserName');
+    const emailEl = document.getElementById('menuUserEmail');
+    const setName = document.getElementById('settingName');
+    const setEmail = document.getElementById('settingEmail');
+
+    if (avatar) avatar.textContent = initials;
+    if (nameEl) nameEl.textContent = name;
+    if (emailEl) emailEl.textContent = email;
+    if (setName) setName.value = name;
+    if (setEmail) setEmail.value = email;
+
+    console.log("Profile loaded OK");
+
+  } catch (err) {
+    console.error("loadProfile crash:", err);
+  }
 }
 
 function getPin() { return userProfile?.pin || '1234'; }
