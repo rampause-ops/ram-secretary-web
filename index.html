@@ -818,31 +818,70 @@ async function doLogin() {
   }
 }
 async function doRegister() {
-  const name = document.getElementById('regName').value.trim();
-  const email= document.getElementById('regEmail').value.trim();
-  const pw   = document.getElementById('regPw').value;
-  const pw2  = document.getElementById('regPw2').value;
+  const name = document.getElementById('regName')?.value.trim();
+  const email= document.getElementById('regEmail')?.value.trim();
+  const pw   = document.getElementById('regPw')?.value;
+  const pw2  = document.getElementById('regPw2')?.value;
   const errEl= document.getElementById('registerError');
-  errEl.classList.remove('show');
-  if (!name||!email||!pw||!pw2) { errEl.textContent='Jaza sehemu zote / Fill all fields'; errEl.classList.add('show'); return; }
-  if (pw.length < 6) { errEl.textContent='Nywila lazima iwe na herufi 6+ / Password must be 6+ characters'; errEl.classList.add('show'); return; }
-  if (pw !== pw2) { errEl.textContent='Nywila hazilingani / Passwords do not match'; errEl.classList.add('show'); return; }
-  setBtnLoading('registerBtn');
-  try {
-    const { error } = await withTimeout(sb.auth.signUp({ email, password: pw, options: { data: { full_name: name } } }), 12000);
-    if (error) {
-      errEl.textContent = error.message.includes('already') ? 'Barua pepe hii tayari ipo / Email already registered' : 'Kosa: '+error.message;
+
+  if (errEl) errEl.classList.remove('show');
+
+  if (!name || !email || !pw || !pw2) {
+    if (errEl) {
+      errEl.textContent='Jaza sehemu zote / Fill all fields';
       errEl.classList.add('show');
-    } else {
-      showAuthScreen();
-      switchAuthTab('login');
-      showToast('✓ Akaunti imetengenezwa! Ingia sasa / Account created! Sign in now.');
     }
+    return;
+  }
+
+  if (pw.length < 6) {
+    if (errEl) {
+      errEl.textContent='Nywila lazima iwe na herufi 6+';
+      errEl.classList.add('show');
+    }
+    return;
+  }
+
+  if (pw !== pw2) {
+    if (errEl) {
+      errEl.textContent='Nywila hazilingani';
+      errEl.classList.add('show');
+    }
+    return;
+  }
+
+  setBtnLoading('registerBtn');
+
+  try {
+    const { data, error } = await sb.auth.signUp({
+      email,
+      password: pw,
+      options: {
+        data: { full_name: name }
+      }
+    });
+
+    console.log("SIGNUP RESULT:", data, error);
+
+    if (error) {
+      if (errEl) {
+        errEl.textContent = error.message;
+        errEl.classList.add('show');
+      }
+      return;
+    }
+
+    alert("Akaunti imetengenezwa! Sasa login.");
+
+    showAuthScreen();
+    switchAuthTab('login');
+
   } catch(err) {
-    errEl.textContent = err.message === 'TIMEOUT'
-      ? '⏳ Seva haikujibu. Angalia mtandao wako na ujaribu tena.'
-      : 'Kosa: ' + err.message;
-    errEl.classList.add('show');
+    console.error("Signup crash:", err);
+    if (errEl) {
+      errEl.textContent = 'Kosa: ' + err.message;
+      errEl.classList.add('show');
+    }
   } finally {
     resetBtn('registerBtn', 'Sajili / Register');
   }
@@ -889,7 +928,7 @@ function showApp() {
 // ════════════════════════════════════════════════════════
 //  PROFILE
 // ════════════════════════════════════════════════════════
-async function loadProfile() {
+ function loadProfile() {
 
   // 🛑 STOP kama hakuna user
   if (!currentUser || !currentUser.id) {
@@ -974,7 +1013,7 @@ function switchTab(tab) {
 // ════════════════════════════════════════════════════════
 //  TODAY VIEW
 // ════════════════════════════════════════════════════════
-async function renderToday() {
+ function renderToday() {
   const key = getTodayKey();
   showSkeletons('todayTaskList', 3);
   const [tasks, note] = await Promise.all([fetchTasks(key), fetchNote(key)]);
@@ -985,7 +1024,7 @@ async function renderToday() {
   document.getElementById('dailyNotesInput').value = note?.content || '';
 }
 
-async function fetchTasks(dateStr) {
+ function fetchTasks(dateStr) {
   if (!currentUser) return [];
   const { data, error } = await sb.from('tasks')
     .select('*').eq('user_id', currentUser.id).eq('task_date', dateStr)
@@ -994,7 +1033,7 @@ async function fetchTasks(dateStr) {
   return data || [];
 }
 
-async function fetchNote(dateStr) {
+ function fetchNote(dateStr) {
   if (!currentUser) return null;
   const { data } = await sb.from('daily_notes')
     .select('*').eq('user_id', currentUser.id).eq('note_date', dateStr).maybeSingle();
@@ -1073,7 +1112,7 @@ function checkAlert(tasks) {
 function scheduleNoteSave() {
   clearTimeout(notesTimer);
   document.getElementById('notesSaveIndicator').textContent = 'Inahifadhi... / Saving...';
-  notesTimer = setTimeout(async () => {
+  notesTimer = setTimeout( () => {
     const key  = currentTab==='today' ? getTodayKey() : dateKey(historyDate);
     const text = document.getElementById('dailyNotesInput').value;
     const { error } = await sb.from('daily_notes')
@@ -1087,7 +1126,7 @@ function scheduleNoteSave() {
 // ════════════════════════════════════════════════════════
 //  HISTORY VIEW
 // ════════════════════════════════════════════════════════
-async function renderHistory() {
+ function renderHistory() {
   historyDate = historyDate || new Date();
   const dk     = dateKey(historyDate);
   const today  = getTodayKey();
@@ -1121,7 +1160,7 @@ function historyPickDate() {
 // ════════════════════════════════════════════════════════
 //  DASHBOARD
 // ════════════════════════════════════════════════════════
-async function renderDashboard() {
+ function renderDashboard() {
   if (!currentUser) return;
   const today = getTodayKey();
   const d14ago = new Date(); d14ago.setDate(d14ago.getDate()-13);
@@ -1230,7 +1269,7 @@ function populateReportWeeks() {
   }
 }
 
-async function renderReport() {
+ function renderReport() {
   const mondayStr=document.getElementById('reportWeekSelect').value;
   if(!mondayStr||!currentUser)return;
   const monday=new Date(mondayStr+'T12:00:00');
@@ -1281,7 +1320,7 @@ function openAddTask() {
   setTimeout(()=>document.getElementById('taskName').focus(),100);
 }
 
-async function editTask(dk, tid) {
+ function editTask(dk, tid) {
   showSkeletons('todayTaskList',1);
   const { data:tasks } = await sb.from('tasks').select('*').eq('id',tid).single();
   const t = tasks;
@@ -1321,7 +1360,7 @@ function toggleReason(){
 
 function closeTaskModal(){ document.getElementById('taskModal').classList.remove('open'); }
 
-async function saveTask() {
+ function saveTask() {
   const name = document.getElementById('taskName').value.trim();
   if(!name){ showToast('Tafadhali weka jina la task! / Task name required.'); return; }
   const brandVal = document.getElementById('taskBrand').value;
@@ -1363,7 +1402,7 @@ function confirmDelete(dk, tid) {
   openPinModal();
 }
 
-async function doDelete(dk, tid) {
+ function doDelete(dk, tid) {
   const { error } = await sb.from('tasks').delete().eq('id', tid);
   if(error){ showToast('⚠️ Kosa la kufuta / Delete error'); return; }
   if(dk===getTodayKey()) renderToday(); else renderHistory();
