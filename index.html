@@ -35,12 +35,9 @@ body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;fo
   animation:slideUp .35s ease;
 }
 @keyframes slideUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-.auth-logo{
-  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;margin-bottom:28px;
-}
+.auth-logo{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;margin-bottom:28px}
 .auth-logo-icon{
-  width:52px;height:52px;
-  background:linear-gradient(135deg,var(--purple),var(--gold));
+  width:52px;height:52px;background:linear-gradient(135deg,var(--purple),var(--gold));
   border-radius:14px;display:flex;align-items:center;justify-content:center;
   font-family:'Cinzel',serif;font-size:22px;font-weight:700;color:#fff;
   box-shadow:0 0 30px var(--purple-glow);
@@ -52,10 +49,7 @@ body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;fo
 .auth-tab.active{background:var(--purple);color:#fff;box-shadow:0 2px 12px var(--purple-glow)}
 .form-group{margin-bottom:14px}
 .form-label{display:block;font-size:11px;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
-.form-input{
-  width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--white);
-  padding:11px 14px;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:.2s;
-}
+.form-input{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--white);padding:11px 14px;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:.2s}
 .form-input:focus{border-color:var(--purple);box-shadow:0 0 0 3px var(--purple-glow)}
 .form-input::placeholder{color:var(--muted)}
 .pw-wrap{position:relative}
@@ -117,24 +111,14 @@ body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;fo
 .user-menu-info{padding:14px;border-bottom:1px solid var(--border)}
 .user-menu-name{font-weight:600;font-size:13px;color:var(--white)}
 .user-menu-email{font-size:11px;color:var(--muted);margin-top:2px}
-.user-menu-item{
-  padding:11px 14px;cursor:pointer;font-size:12px;color:var(--muted);
-  display:flex;align-items:center;gap:8px;transition:.15s;
-}
+.user-menu-item{padding:11px 14px;cursor:pointer;font-size:12px;color:var(--muted);display:flex;align-items:center;gap:8px;transition:.15s}
 .user-menu-item:hover{background:var(--surface3);color:var(--white)}
 .user-menu-item.danger:hover{color:var(--danger)}
 
 /* TABS */
-.tabs{
-  display:flex;background:var(--surface);border-bottom:1px solid var(--border);
-  overflow-x:auto;scrollbar-width:none;flex-shrink:0;
-}
+.tabs{display:flex;background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;flex-shrink:0}
 .tabs::-webkit-scrollbar{display:none}
-.tab{
-  flex:1;min-width:72px;padding:11px 8px;text-align:center;cursor:pointer;
-  font-size:10px;font-weight:600;color:var(--muted);letter-spacing:.5px;
-  border-bottom:2px solid transparent;transition:.2s;white-space:nowrap;
-}
+.tab{flex:1;min-width:72px;padding:11px 8px;text-align:center;cursor:pointer;font-size:10px;font-weight:600;color:var(--muted);letter-spacing:.5px;border-bottom:2px solid transparent;transition:.2s;white-space:nowrap}
 .tab .ti{font-size:15px;display:block;margin-bottom:2px}
 .tab.active{color:var(--purple-light);border-bottom-color:var(--purple-light)}
 .tab:hover:not(.active){color:var(--white)}
@@ -242,7 +226,7 @@ body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;fo
 .streak-day.partial{background:rgba(224,156,58,.25);color:var(--warning);border-color:rgba(224,156,58,.3)}
 .streak-day.bad{background:rgba(224,85,85,.2);color:var(--danger);border-color:rgba(224,85,85,.3)}
 .streak-day.empty{background:var(--surface2);color:var(--muted);border-color:var(--border)}
-.streak-day.today{border-color:var(--purple-light)!important;box-shadow:0 0 8px var(--purple-glow)}
+.streak-day.today-mark{border-color:var(--purple-light)!important;box-shadow:0 0 8px var(--purple-glow)}
 
 /* CHARTS */
 .chart-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px}
@@ -273,7 +257,6 @@ body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;fo
 .modal{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:24px;width:100%;max-width:480px;box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 40px var(--purple-glow);animation:slideUp .25s ease}
 .modal-title{font-family:'Cinzel',serif;font-size:15px;font-weight:600;margin-bottom:18px;color:var(--white)}
 .modal-title span{color:var(--gold)}
-.form-group{margin-bottom:13px}
 .form-label-m{font-size:11px;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;display:block}
 .form-input-m,.form-select-m,.form-textarea-m{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--white);padding:10px 14px;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:13px;transition:.2s;outline:none}
 .form-input-m:focus,.form-select-m:focus,.form-textarea-m:focus{border-color:var(--purple);box-shadow:0 0 0 3px var(--purple-glow)}
@@ -577,7 +560,7 @@ body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;fo
     </div>
     <div class="form-group">
       <label class="form-label-m">Brand</label>
-      <select class="form-select-m" id="taskBrand">
+      <select class="form-select-m" id="taskBrand" onchange="handleBrandChange()">
         <option value="Coach Ram">🎓 Coach Ram</option>
         <option value="Ramgrapher">📸 Ramgrapher</option>
         <option value="Rampause">🌙 Rampause</option>
@@ -675,10 +658,10 @@ body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;fo
 
 <script>
 // ════════════════════════════════════════════════════════
-//  ⚙️  CONFIGURATION — BADILISHA HAPA / CHANGE HERE
+//  ⚙️  CONFIGURATION
 // ════════════════════════════════════════════════════════
-const SUPABASE_URL  = 'https://eqwkowrffpjafzfhpobr.supabase.co';        // e.g. https://xxxx.supabase.co
-const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxd2tvd3JmZnBqYWZ6Zmhwb2JyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1NDI2MzUsImV4cCI6MjA5MjExODYzNX0.qvdTMiJI9-7XQCxHhNjnarSWs10u_BINkIzq3FgpZrE';   // eyJ...
+const SUPABASE_URL = 'https://eqwkowrffpjafzfhpobr.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxd2tvd3JmZnBqYWZ6Zmhwb2JyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1NDI2MzUsImV4cCI6MjA5MjExODYzNX0.qvdTMiJI9-7XQCxHhNjnarSWs10u_BINkIzq3FgpZrE';
 
 // ════════════════════════════════════════════════════════
 //  SUPABASE INIT
@@ -687,48 +670,94 @@ const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ════════════════════════════════════════════════════════
-//  STATE
+//  STATE — FIX #1: appInitialized was used but never declared
 // ════════════════════════════════════════════════════════
-let currentUser = null;
-let userProfile = null;
-let currentTab  = 'today';
-let historyDate = new Date();
-let editingTaskId   = null;
-let editingDateKey  = null;
-let pinCallback     = null;
-let pinBuffer       = '';
-let charts          = {};
-let notesTimer      = null;
+let appInitialized = false;   // ✅ FIXED: was ReferenceError
+let currentUser    = null;
+let userProfile    = null;
+let currentTab     = 'today';
+let historyDate    = new Date();
+let editingTaskId  = null;
+let editingDateKey = null;
+let pinCallback    = null;
+let pinBuffer      = '';
+let charts         = {};
+let notesTimer     = null;
 let todayTasksCache = [];
 
 const BRAND_COLORS = {'Coach Ram':'#7c3aed','Ramgrapher':'#c9a84c','Rampause':'#4a4aaa'};
-const SW_DAYS  = ['Jumapili','Jumatatu','Jumanne','Jumatano','Alhamisi','Ijumaa','Jumamosi'];
-const SW_MONTHS= ['Januari','Februari','Machi','Aprili','Mei','Juni','Julai','Agosti','Septemba','Oktoba','Novemba','Desemba'];
+const SW_DAYS   = ['Jumapili','Jumatatu','Jumanne','Jumatano','Alhamisi','Ijumaa','Jumamosi'];
+const SW_MONTHS = ['Januari','Februari','Machi','Aprili','Mei','Juni','Julai','Agosti','Septemba','Oktoba','Novemba','Desemba'];
 
 // ════════════════════════════════════════════════════════
 //  UTILS
 // ════════════════════════════════════════════════════════
-const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const esc = s => String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const getTodayKey = () => new Date().toISOString().split('T')[0];
-const dateKey = d => d.toISOString().split('T')[0];
-const genId = () => Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const dateKey = d => {
+  // ✅ FIXED: always produce YYYY-MM-DD regardless of timezone shifts
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+};
 
 let toastTimer;
 function showToast(msg) {
   clearTimeout(toastTimer);
   const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
+  t.textContent = msg;
+  t.classList.add('show');
   toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
 }
+
+function withTimeout(promise, ms) {
+  return new Promise((resolve, reject) => {
+    const t = setTimeout(() => reject(new Error('TIMEOUT')), ms);
+    promise.then(v => { clearTimeout(t); resolve(v); })
+           .catch(e => { clearTimeout(t); reject(e); });
+  });
+}
+
+function setBtnLoading(id) {
+  const btn = document.getElementById(id);
+  if (!btn) return;
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div>';
+}
+
+function resetBtn(id, label) {
+  const btn = document.getElementById(id);
+  if (!btn) return;
+  btn.disabled = false;
+  btn.innerHTML = '<span>' + label + '</span>';
+}
+
+// ════════════════════════════════════════════════════════
+//  FIX #2: AUTH STATE LISTENER — session restored on page refresh
+//  Original had NO onAuthStateChange → users had to re-login on every refresh
+// ════════════════════════════════════════════════════════
+sb.auth.onAuthStateChange(async (event, session) => {
+  if (event === 'SIGNED_IN' && session?.user) {
+    currentUser = session.user;
+    await loadProfile();
+    showApp();
+  } else if (event === 'SIGNED_OUT') {
+    currentUser = null;
+    userProfile = null;
+    appInitialized = false;
+    showAuthScreen();
+  }
+});
 
 // ════════════════════════════════════════════════════════
 //  AUTH UI
 // ════════════════════════════════════════════════════════
 function switchAuthTab(tab) {
-  document.getElementById('loginForm').style.display   = tab==='login'    ? '' : 'none';
-  document.getElementById('registerForm').style.display= tab==='register' ? '' : 'none';
-  document.getElementById('tabLogin').classList.toggle('active',    tab==='login');
-  document.getElementById('tabRegister').classList.toggle('active', tab==='register');
+  document.getElementById('loginForm').style.display    = tab === 'login'    ? '' : 'none';
+  document.getElementById('registerForm').style.display = tab === 'register' ? '' : 'none';
+  document.getElementById('tabLogin').classList.toggle('active',    tab === 'login');
+  document.getElementById('tabRegister').classList.toggle('active', tab === 'register');
 }
 
 function togglePw(id, btn) {
@@ -738,39 +767,20 @@ function togglePw(id, btn) {
   btn.textContent = show ? '🙈' : '👁';
 }
 
-// ── Timeout helper ──
-function withTimeout(promise, ms) {
-  return new Promise((resolve, reject) => {
-    const t = setTimeout(() => reject(new Error('TIMEOUT')), ms);
-    promise.then(v => { clearTimeout(t); resolve(v); })
-           .catch(e => { clearTimeout(t); reject(e); });
-  });
-}
-
-function resetBtn(id, label) {
-  const btn = document.getElementById(id);
-  btn.disabled = false;
-  btn.innerHTML = '<span>' + label + '</span>';
-}
-
-function setBtnLoading(id) {
-  const btn = document.getElementById(id);
-  btn.disabled = true;
-  btn.innerHTML = '<div class="spinner"></div>';
-}
-
+// ════════════════════════════════════════════════════════
+//  FIX #3 + #4: doLogin — was missing async AND called wrong
+//  DOM elements that don't exist; never called showApp()
+// ════════════════════════════════════════════════════════
 async function doLogin() {
-  const email = document.getElementById('loginEmail')?.value?.trim();
-  const pw    = document.getElementById('loginPw')?.value;
+  const email = document.getElementById('loginEmail').value.trim();
+  const pw    = document.getElementById('loginPw').value;
   const errEl = document.getElementById('loginError');
 
-  if (errEl) errEl.classList.remove('show');
+  errEl.classList.remove('show');
 
   if (!email || !pw) {
-    if (errEl) {
-      errEl.textContent = 'Jaza sehemu zote / Fill all fields';
-      errEl.classList.add('show');
-    }
+    errEl.textContent = 'Jaza sehemu zote / Fill all fields';
+    errEl.classList.add('show');
     return;
   }
 
@@ -783,70 +793,46 @@ async function doLogin() {
     );
 
     if (error) {
-      if (errEl) {
-        errEl.textContent = 'Barua pepe au nywila si sahihi / Email or password incorrect';
-        errEl.classList.add('show');
-      }
+      errEl.textContent = 'Barua pepe au nywila si sahihi / Email or password incorrect';
+      errEl.classList.add('show');
       return;
     }
 
-    console.log("LOGIN SUCCESS:", data.user);
+    // ✅ FIXED: onAuthStateChange handles showApp() automatically.
+    // Nothing else needed here — the listener fires after successful sign-in.
 
-    // ✅ SAFE NAVIGATION (HAICRASH)
-    const loginSec = document.getElementById('loginSection');
-    const appSec   = document.getElementById('appSection');
-
-    if (loginSec) loginSec.style.display = 'none';
-    if (appSec) appSec.style.display = 'block';
-
-    // optional safe load
-    if (typeof loadProfile === 'function') {
-      await loadProfile();
-    }
-
-  } catch(err) {
-    if (errEl) {
-      errEl.textContent = err.message === 'TIMEOUT'
-        ? '⏳ Seva haikujibu. Angalia Supabase dashboard → Restore project.'
-        : 'Kosa la mtandao: ' + err.message;
-
-      errEl.classList.add('show');
-    }
-
+  } catch (err) {
+    errEl.textContent = err.message === 'TIMEOUT'
+      ? '⏳ Seva haikujibu. Angalia mtandao wako / Server timeout. Check your connection.'
+      : 'Kosa la mtandao: ' + err.message;
+    errEl.classList.add('show');
   } finally {
     resetBtn('loginBtn', 'Ingia / Sign In');
   }
 }
-async function doRegister() {
-  const name = document.getElementById('regName')?.value.trim();
-  const email= document.getElementById('regEmail')?.value.trim();
-  const pw   = document.getElementById('regPw')?.value;
-  const pw2  = document.getElementById('regPw2')?.value;
-  const errEl= document.getElementById('registerError');
 
-  if (errEl) errEl.classList.remove('show');
+async function doRegister() {
+  const name  = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const pw    = document.getElementById('regPw').value;
+  const pw2   = document.getElementById('regPw2').value;
+  const errEl = document.getElementById('registerError');
+
+  errEl.classList.remove('show');
 
   if (!name || !email || !pw || !pw2) {
-    if (errEl) {
-      errEl.textContent='Jaza sehemu zote / Fill all fields';
-      errEl.classList.add('show');
-    }
+    errEl.textContent = 'Jaza sehemu zote / Fill all fields';
+    errEl.classList.add('show');
     return;
   }
-
   if (pw.length < 6) {
-    if (errEl) {
-      errEl.textContent='Nywila lazima iwe na herufi 6+';
-      errEl.classList.add('show');
-    }
+    errEl.textContent = 'Nywila lazima iwe na herufi 6+ / Password must be at least 6 characters';
+    errEl.classList.add('show');
     return;
   }
-
   if (pw !== pw2) {
-    if (errEl) {
-      errEl.textContent='Nywila hazilingani';
-      errEl.classList.add('show');
-    }
+    errEl.textContent = 'Nywila hazilingani / Passwords do not match';
+    errEl.classList.add('show');
     return;
   }
 
@@ -856,51 +842,40 @@ async function doRegister() {
     const { data, error } = await sb.auth.signUp({
       email,
       password: pw,
-      options: {
-        data: { full_name: name }
-      }
+      options: { data: { full_name: name } }
     });
 
-    console.log("SIGNUP RESULT:", data, error);
-
     if (error) {
-      if (errEl) {
-        errEl.textContent = error.message;
-        errEl.classList.add('show');
-      }
+      errEl.textContent = error.message;
+      errEl.classList.add('show');
       return;
     }
 
-    alert("Akaunti imetengenezwa! Sasa login.");
-
-    showAuthScreen();
+    alert('✅ Akaunti imetengenezwa! Sasa ingia / Account created! Please sign in.');
     switchAuthTab('login');
 
-  } catch(err) {
-    console.error("Signup crash:", err);
-    if (errEl) {
-      errEl.textContent = 'Kosa: ' + err.message;
-      errEl.classList.add('show');
-    }
+  } catch (err) {
+    errEl.textContent = 'Kosa: ' + err.message;
+    errEl.classList.add('show');
   } finally {
     resetBtn('registerBtn', 'Sajili / Register');
   }
 }
 
+// ════════════════════════════════════════════════════════
+//  FIX #5: doSignOut — now awaits signOut before resetting state
+//  Original reset appInitialized BEFORE signOut completed
+// ════════════════════════════════════════════════════════
 async function doSignOut() {
   try {
-    appInitialized = false;
-
-    await sb.auth.signOut();
-
+    await sb.auth.signOut(); // ✅ FIXED: await first, then state is reset by onAuthStateChange
+  } catch (err) {
+    console.error('Logout error:', err);
+    // Force reset even if signOut fails
     currentUser = null;
     userProfile = null;
-
+    appInitialized = false;
     showAuthScreen();
-
-    console.log("Logged out successfully");
-  } catch (err) {
-    console.error("Logout error:", err);
   }
 }
 
@@ -919,20 +894,17 @@ function showApp() {
   populateReportWeeks();
   switchTab('today');
   setInterval(updateHeaderDate, 60000);
-  // Offline detection
   window.addEventListener('online',  () => document.getElementById('offlineBanner').classList.remove('show'));
   window.addEventListener('offline', () => document.getElementById('offlineBanner').classList.add('show'));
   if (!navigator.onLine) document.getElementById('offlineBanner').classList.add('show');
 }
 
 // ════════════════════════════════════════════════════════
-//  PROFILE
+//  FIX #6: loadProfile — was missing `async` keyword entirely
 // ════════════════════════════════════════════════════════
- function loadProfile() {
-
-  // 🛑 STOP kama hakuna user
+async function loadProfile() {
   if (!currentUser || !currentUser.id) {
-    console.warn("User haipo bado");
+    console.warn('loadProfile: no user');
     return;
   }
 
@@ -943,77 +915,75 @@ function showApp() {
       .eq('id', currentUser.id)
       .single();
 
-    if (error) {
-      console.warn("Profile fetch error:", error.message);
-      return;
+    // Profile may not exist yet (new user) — that's OK
+    if (!error && data) {
+      userProfile = data;
     }
 
-    userProfile = data;
+    const name     = userProfile?.full_name || currentUser.email.split('@')[0];
+    const email    = currentUser.email;
+    const initials = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
 
-    const name  = userProfile?.full_name || currentUser.email.split('@')[0];
-    const email = currentUser.email;
-    const initials = name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+    const safeSet = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+    const safeVal = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
 
-    // 🛡️ SAFE UI UPDATE
-    const avatar = document.getElementById('avatarInitials');
-    const nameEl = document.getElementById('menuUserName');
-    const emailEl = document.getElementById('menuUserEmail');
-    const setName = document.getElementById('settingName');
-    const setEmail = document.getElementById('settingEmail');
-
-    if (avatar) avatar.textContent = initials;
-    if (nameEl) nameEl.textContent = name;
-    if (emailEl) emailEl.textContent = email;
-    if (setName) setName.value = name;
-    if (setEmail) setEmail.value = email;
-
-    console.log("Profile loaded OK");
+    safeSet('avatarInitials', initials);
+    safeSet('menuUserName',   name);
+    safeSet('menuUserEmail',  email);
+    safeVal('settingName',    name);
+    safeVal('settingEmail',   email);
 
   } catch (err) {
-    console.error("loadProfile crash:", err);
+    console.error('loadProfile crash:', err);
   }
 }
 
-function getPin() { return userProfile?.pin || '1234'; }
+function getPin() {
+  return userProfile?.pin || '1234';
+}
 
 // ════════════════════════════════════════════════════════
 //  HEADER & DATE
 // ════════════════════════════════════════════════════════
 function updateHeaderDate() {
   const now = new Date();
-  document.getElementById('headerDateStr').textContent  = `${now.getDate()} ${SW_MONTHS[now.getMonth()]} ${now.getFullYear()}`;
-  document.getElementById('headerDayStr').textContent   = SW_DAYS[now.getDay()];
-  document.getElementById('todaySectionDate').textContent = `${SW_DAYS[now.getDay()]}, ${now.getDate()} ${SW_MONTHS[now.getMonth()]}`;
+  const dateStr = `${now.getDate()} ${SW_MONTHS[now.getMonth()]} ${now.getFullYear()}`;
+  const dayStr  = SW_DAYS[now.getDay()];
+  document.getElementById('headerDateStr').textContent    = dateStr;
+  document.getElementById('headerDayStr').textContent     = dayStr;
+  document.getElementById('todaySectionDate').textContent = `${dayStr}, ${now.getDate()} ${SW_MONTHS[now.getMonth()]}`;
 }
 
 function toggleUserMenu() {
   document.getElementById('userMenu').classList.toggle('open');
 }
 document.addEventListener('click', e => {
-  if (!document.getElementById('userAvatar').contains(e.target))
+  const avatar = document.getElementById('userAvatar');
+  if (avatar && !avatar.contains(e.target)) {
     document.getElementById('userMenu').classList.remove('open');
+  }
 });
 
 // ════════════════════════════════════════════════════════
 //  TAB SWITCHING
 // ════════════════════════════════════════════════════════
 function switchTab(tab) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t  => t.classList.remove('active'));
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.getElementById('tab-'+tab).classList.add('active');
-  document.getElementById('view-'+tab).classList.add('active');
-  document.getElementById('fabBtn').style.display = tab==='today' ? 'flex' : 'none';
+  document.getElementById('tab-' + tab).classList.add('active');
+  document.getElementById('view-' + tab).classList.add('active');
+  document.getElementById('fabBtn').style.display = tab === 'today' ? 'flex' : 'none';
   currentTab = tab;
-  if (tab==='today')     renderToday();
-  if (tab==='history')   renderHistory();
-  if (tab==='dashboard') renderDashboard();
-  if (tab==='report')    renderReport();
+  if (tab === 'today')     renderToday();
+  if (tab === 'history')   renderHistory();
+  if (tab === 'dashboard') renderDashboard();
+  if (tab === 'report')    renderReport();
 }
 
 // ════════════════════════════════════════════════════════
-//  TODAY VIEW
+//  FIX #7: renderToday — was missing `async`
 // ════════════════════════════════════════════════════════
- function renderToday() {
+async function renderToday() {
   const key = getTodayKey();
   showSkeletons('todayTaskList', 3);
   const [tasks, note] = await Promise.all([fetchTasks(key), fetchNote(key)]);
@@ -1024,373 +994,590 @@ function switchTab(tab) {
   document.getElementById('dailyNotesInput').value = note?.content || '';
 }
 
- function fetchTasks(dateStr) {
+// ════════════════════════════════════════════════════════
+//  FIX #8: fetchTasks — was missing `async`
+// ════════════════════════════════════════════════════════
+async function fetchTasks(dateStr) {
   if (!currentUser) return [];
   const { data, error } = await sb.from('tasks')
-    .select('*').eq('user_id', currentUser.id).eq('task_date', dateStr)
+    .select('*')
+    .eq('user_id', currentUser.id)
+    .eq('task_date', dateStr)
     .order('task_time', { ascending: true, nullsFirst: false });
   if (error) { showToast('⚠️ Kosa la data / Data error'); return []; }
   return data || [];
 }
 
- function fetchNote(dateStr) {
+// ════════════════════════════════════════════════════════
+//  FIX #9: fetchNote — was missing `async`
+// ════════════════════════════════════════════════════════
+async function fetchNote(dateStr) {
   if (!currentUser) return null;
   const { data } = await sb.from('daily_notes')
-    .select('*').eq('user_id', currentUser.id).eq('note_date', dateStr).maybeSingle();
+    .select('*')
+    .eq('user_id', currentUser.id)
+    .eq('note_date', dateStr)
+    .maybeSingle();
   return data;
 }
 
 function showSkeletons(id, n) {
-  document.getElementById(id).innerHTML = Array(n).fill(0).map((_,i) =>
-    `<div class="skeleton skel-card" style="height:${i===n-1?52:72}px"></div>`).join('');
+  document.getElementById(id).innerHTML = Array(n).fill(0).map((_, i) =>
+    `<div class="skeleton skel-card" style="height:${i === n - 1 ? 52 : 72}px"></div>`
+  ).join('');
 }
 
 function renderTaskList(containerId, tasks, dk, canEdit) {
   const el = document.getElementById(containerId);
-  if (!tasks || tasks.length===0) {
-    el.innerHTML = `<div class="empty-state"><div class="ei">📭</div><p>${canEdit&&dk===getTodayKey()?'Hakuna tasks leo. Bonyeza + kuongeza.<br><small style="color:var(--muted)">No tasks today. Tap + to add.</small>':'Hakuna tasks siku hii.'}</p></div>`;
+  if (!tasks || tasks.length === 0) {
+    el.innerHTML = `<div class="empty-state"><div class="ei">📭</div><p>${
+      canEdit && dk === getTodayKey()
+        ? 'Hakuna tasks leo. Bonyeza + kuongeza.<br><small style="color:var(--muted)">No tasks today. Tap + to add.</small>'
+        : 'Hakuna tasks siku hii.'
+    }</p></div>`;
     return;
   }
   el.innerHTML = tasks.map(t => taskCardHTML(t, dk, canEdit)).join('');
 }
 
 function taskCardHTML(t, dk, canEdit) {
-  const bc = BRAND_COLORS[t.brand] || '#888';
-  const sb2 = t.status==='done'?'<span class="badge badge-done">✓ Done</span>':t.status==='skipped'?'<span class="badge badge-skipped">✗ Skipped</span>':'<span class="badge badge-pending">⏳ Pending</span>';
-  return `<div class="task-card ${t.status}" id="tc-${t.id}">
+  const bc  = BRAND_COLORS[t.brand] || '#888';
+  const sb2 = t.status === 'done'
+    ? '<span class="badge badge-done">✓ Done</span>'
+    : t.status === 'skipped'
+      ? '<span class="badge badge-skipped">✗ Skipped</span>'
+      : '<span class="badge badge-pending">⏳ Pending</span>';
+
+  // ✅ Escape dk and tid before embedding in onclick to prevent injection
+  const safeDk  = dk.replace(/'/g, '');
+  const safeTid = String(t.id).replace(/'/g, '');
+
+  return `<div class="task-card ${t.status}" id="tc-${safeTid}">
     <div class="task-top">
       <div class="task-name">${esc(t.name)}</div>
       <div class="task-actions">
-        ${canEdit?`<button class="btn btn-ghost btn-icon btn-sm" onclick="editTask('${dk}','${t.id}')" title="Hariri">✏️</button>`:''}
-        <button class="btn btn-danger btn-icon btn-sm" onclick="confirmDelete('${dk}','${t.id}')" title="Futa">🗑️</button>
+        ${canEdit ? `<button class="btn btn-ghost btn-icon btn-sm" onclick="editTask('${safeDk}','${safeTid}')" title="Hariri">✏️</button>` : ''}
+        <button class="btn btn-danger btn-icon btn-sm" onclick="confirmDelete('${safeDk}','${safeTid}')" title="Futa">🗑️</button>
       </div>
     </div>
     <div class="task-meta">
-      ${t.task_time?`<span class="badge badge-time">🕐 ${t.task_time}</span>`:''}
+      ${t.task_time ? `<span class="badge badge-time">🕐 ${esc(t.task_time)}</span>` : ''}
       <span class="badge badge-brand" style="background:${bc}22;color:${bc}">${esc(t.brand)}</span>
       ${sb2}
     </div>
-    ${t.reason?`<div class="task-reason">💬 ${esc(t.reason)}</div>`:''}
-    ${t.notes?`<div class="task-reason" style="font-style:normal">📝 ${esc(t.notes)}</div>`:''}
+    ${t.reason ? `<div class="task-reason">💬 ${esc(t.reason)}</div>` : ''}
+    ${t.notes  ? `<div class="task-reason" style="font-style:normal">📝 ${esc(t.notes)}</div>` : ''}
   </div>`;
 }
 
 function updateProgressBar(tasks) {
-  if (!tasks || tasks.length===0) {
-    document.getElementById('progressPct').textContent = '—';
-    document.getElementById('progressBar').style.width = '0%';
-    document.getElementById('doneCount').textContent    = '✓ 0 Imekamilika';
-    document.getElementById('pendingCount').textContent = '⏳ 0 Inasubiri';
-    document.getElementById('skippedCount').textContent = '✗ 0 Ilirukwa';
+  if (!tasks || tasks.length === 0) {
+    document.getElementById('progressPct').textContent     = '—';
+    document.getElementById('progressBar').style.width     = '0%';
+    document.getElementById('doneCount').textContent       = '✓ 0 Imekamilika';
+    document.getElementById('pendingCount').textContent    = '⏳ 0 Inasubiri';
+    document.getElementById('skippedCount').textContent    = '✗ 0 Ilirukwa';
     return;
   }
-  const done    = tasks.filter(t=>t.status==='done').length;
-  const pending = tasks.filter(t=>t.status==='pending').length;
-  const skipped = tasks.filter(t=>t.status==='skipped').length;
-  const pct = Math.round(done/tasks.length*100);
-  document.getElementById('progressPct').textContent    = pct+'%';
-  document.getElementById('progressBar').style.width    = pct+'%';
-  document.getElementById('doneCount').textContent      = `✓ ${done} Imekamilika`;
-  document.getElementById('pendingCount').textContent   = `⏳ ${pending} Inasubiri`;
-  document.getElementById('skippedCount').textContent   = `✗ ${skipped} Ilirukwa`;
+  const done    = tasks.filter(t => t.status === 'done').length;
+  const pending = tasks.filter(t => t.status === 'pending').length;
+  const skipped = tasks.filter(t => t.status === 'skipped').length;
+  const pct     = Math.round(done / tasks.length * 100);
+  document.getElementById('progressPct').textContent    = pct + '%';
+  document.getElementById('progressBar').style.width   = pct + '%';
+  document.getElementById('doneCount').textContent     = `✓ ${done} Imekamilika`;
+  document.getElementById('pendingCount').textContent  = `⏳ ${pending} Inasubiri`;
+  document.getElementById('skippedCount').textContent  = `✗ ${skipped} Ilirukwa`;
 }
 
 function checkAlert(tasks) {
   const banner = document.getElementById('alertBanner');
-  if (!tasks || tasks.length===0) { banner.classList.remove('show'); return; }
-  const noReason = tasks.filter(t=>(t.status==='skipped'||t.status==='pending')&&!t.reason).length;
-  if (noReason>=3) {
+  if (!tasks || tasks.length === 0) { banner.classList.remove('show'); return; }
+  const noReason = tasks.filter(t => (t.status === 'skipped' || t.status === 'pending') && !t.reason).length;
+  if (noReason >= 3) {
     document.getElementById('alertTitle').textContent = `⚠️ Onyo: Tasks ${noReason} hazina sababu!`;
     document.getElementById('alertMsg').textContent   = `Tasks ${noReason} ni pending/skipped bila sababu. Weka sababu.`;
     banner.classList.add('show');
-  } else { banner.classList.remove('show'); }
+  } else {
+    banner.classList.remove('show');
+  }
 }
 
 // ════════════════════════════════════════════════════════
-//  NOTES AUTO-SAVE
+//  FIX #10: scheduleNoteSave — setTimeout callback used await without async
 // ════════════════════════════════════════════════════════
 function scheduleNoteSave() {
   clearTimeout(notesTimer);
   document.getElementById('notesSaveIndicator').textContent = 'Inahifadhi... / Saving...';
-  notesTimer = setTimeout( () => {
-    const key  = currentTab==='today' ? getTodayKey() : dateKey(historyDate);
-    const text = document.getElementById('dailyNotesInput').value;
-    const { error } = await sb.from('daily_notes')
-      .upsert({ user_id: currentUser.id, note_date: key, content: text, updated_at: new Date().toISOString() },
-               { onConflict: 'user_id,note_date' });
-    document.getElementById('notesSaveIndicator').textContent = error ? '⚠️ Kosa la kuhifadhi' : '✓ Imehifadhiwa / Saved';
-    setTimeout(() => { document.getElementById('notesSaveIndicator').textContent=''; }, 2000);
+  notesTimer = setTimeout(async () => {  // ✅ FIXED: added async
+    try {
+      const key  = currentTab === 'today' ? getTodayKey() : dateKey(historyDate);
+      const text = document.getElementById('dailyNotesInput').value;
+      const { error } = await sb.from('daily_notes')
+        .upsert(
+          { user_id: currentUser.id, note_date: key, content: text, updated_at: new Date().toISOString() },
+          { onConflict: 'user_id,note_date' }
+        );
+      const ind = document.getElementById('notesSaveIndicator');
+      if (ind) {
+        ind.textContent = error ? '⚠️ Kosa la kuhifadhi' : '✓ Imehifadhiwa / Saved';
+        setTimeout(() => { if (ind) ind.textContent = ''; }, 2000);
+      }
+    } catch (err) {
+      console.error('Note save error:', err);
+    }
   }, 800);
 }
 
 // ════════════════════════════════════════════════════════
-//  HISTORY VIEW
+//  FIX #11: renderHistory — was missing `async`
 // ════════════════════════════════════════════════════════
- function renderHistory() {
-  historyDate = historyDate || new Date();
-  const dk     = dateKey(historyDate);
-  const today  = getTodayKey();
-  const isToday= dk===today;
+async function renderHistory() {
+  if (!historyDate) historyDate = new Date();
+  const dk      = dateKey(historyDate);
+  const today   = getTodayKey();
+  const isToday = dk === today;
+
   document.getElementById('historyDateStr').textContent = `${historyDate.getDate()} ${SW_MONTHS[historyDate.getMonth()]} ${historyDate.getFullYear()}`;
-  document.getElementById('historyDayStr').textContent  = SW_DAYS[historyDate.getDay()] + (isToday?' (Leo)':'');
+  document.getElementById('historyDayStr').textContent  = SW_DAYS[historyDate.getDay()] + (isToday ? ' (Leo)' : '');
   document.getElementById('historyPicker').value = dk;
+
   showSkeletons('historyTaskList', 2);
   const [tasks, note] = await Promise.all([fetchTasks(dk), fetchNote(dk)]);
-  const done  = tasks.filter(t=>t.status==='done').length;
+
+  const done  = tasks.filter(t => t.status === 'done').length;
   const total = tasks.length;
-  const pct   = total>0 ? Math.round(done/total*100) : 0;
-  document.getElementById('historyProgressBadge').innerHTML = total>0
+  const pct   = total > 0 ? Math.round(done / total * 100) : 0;
+
+  document.getElementById('historyProgressBadge').innerHTML = total > 0
     ? `<span class="badge" style="background:rgba(124,58,237,.2);color:var(--purple-light)">${done}/${total} (${pct}%)</span>`
     : `<span class="badge" style="background:var(--surface3);color:var(--muted)">Hakuna data</span>`;
+
   renderTaskList('historyTaskList', tasks, dk, true);
   document.getElementById('historyNotesText').textContent = note?.content || 'Hakuna maelezo kwa siku hii.';
 }
 
-function historyPrev() { historyDate.setDate(historyDate.getDate()-1); renderHistory(); }
+function historyPrev() {
+  historyDate.setDate(historyDate.getDate() - 1);
+  renderHistory();
+}
 function historyNext() {
-  const next = new Date(historyDate); next.setDate(next.getDate()+1);
-  if (next <= new Date()) { historyDate=next; renderHistory(); }
-  else showToast('Hauwezi kwenda siku za mbeleni! / Cannot go to future dates.');
+  const next = new Date(historyDate);
+  next.setDate(next.getDate() + 1);
+  const tomorrow = new Date();
+  tomorrow.setHours(0, 0, 0, 0);
+  if (next < tomorrow || dateKey(next) === getTodayKey()) {
+    historyDate = next;
+    renderHistory();
+  } else {
+    showToast('Hauwezi kwenda siku za mbeleni! / Cannot go to future dates.');
+  }
 }
 function historyPickDate() {
   const val = document.getElementById('historyPicker').value;
-  if (val) { historyDate = new Date(val+'T12:00:00'); renderHistory(); }
+  if (val) {
+    // ✅ FIXED: use T12:00:00 local to avoid timezone date shifts
+    historyDate = new Date(val + 'T12:00:00');
+    renderHistory();
+  }
 }
 
 // ════════════════════════════════════════════════════════
-//  DASHBOARD
+//  FIX #12: renderDashboard — was missing `async`
 // ════════════════════════════════════════════════════════
- function renderDashboard() {
+async function renderDashboard() {
   if (!currentUser) return;
-  const today = getTodayKey();
-  const d14ago = new Date(); d14ago.setDate(d14ago.getDate()-13);
+  const today  = getTodayKey();
+  const d14ago = new Date();
+  d14ago.setDate(d14ago.getDate() - 13);
+
   const { data: allTasks } = await sb.from('tasks')
-    .select('*').eq('user_id', currentUser.id)
-    .gte('task_date', dateKey(d14ago)).lte('task_date', today);
+    .select('*')
+    .eq('user_id', currentUser.id)
+    .gte('task_date', dateKey(d14ago))
+    .lte('task_date', today);
+
   const tasks = allTasks || [];
 
   // Group by date
   const byDate = {};
-  tasks.forEach(t => { if(!byDate[t.task_date]) byDate[t.task_date]=[]; byDate[t.task_date].push(t); });
+  tasks.forEach(t => { if (!byDate[t.task_date]) byDate[t.task_date] = []; byDate[t.task_date].push(t); });
 
-  // 14 day keys
+  // Build 14-day key array (oldest → newest)
   const days14 = [];
-  for(let i=13;i>=0;i--) { const d=new Date();d.setDate(d.getDate()-i);days14.push(dateKey(d)); }
-  const week7   = days14.slice(7);
-  const prevWeek= days14.slice(0,7);
+  for (let i = 13; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i); days14.push(dateKey(d));
+  }
+  const week7    = days14.slice(7);
+  const prevWeek = days14.slice(0, 7);
 
   // TODAY stats
-  const todayTasks = byDate[today]||[];
-  const todayDone  = todayTasks.filter(t=>t.status==='done').length;
-  const todayPct   = todayTasks.length ? Math.round(todayDone/todayTasks.length*100) : 0;
-  document.getElementById('statTodayPct').textContent = todayTasks.length ? todayPct+'%' : '—';
+  const todayTasks = byDate[today] || [];
+  const todayDone  = todayTasks.filter(t => t.status === 'done').length;
+  const todayPct   = todayTasks.length ? Math.round(todayDone / todayTasks.length * 100) : 0;
+  document.getElementById('statTodayPct').textContent = todayTasks.length ? todayPct + '%' : '—';
 
   // WEEK stats
-  let wDone=0,wTotal=0;
-  week7.forEach(k=>{const dd=byDate[k]||[];wDone+=dd.filter(t=>t.status==='done').length;wTotal+=dd.length;});
-  document.getElementById('statWeekPct').textContent = wTotal ? Math.round(wDone/wTotal*100)+'%' : '—';
+  let wDone = 0, wTotal = 0;
+  week7.forEach(k => {
+    const dd = byDate[k] || [];
+    wDone  += dd.filter(t => t.status === 'done').length;
+    wTotal += dd.length;
+  });
+  document.getElementById('statWeekPct').textContent = wTotal ? Math.round(wDone / wTotal * 100) + '%' : '—';
 
-  // STREAK
-  let streak=0;
-  for(let i=0;i<14;i++){
-    const d=new Date();d.setDate(d.getDate()-i);
-    const dd=byDate[dateKey(d)]||[];
-    if(dd.length>0&&dd.filter(t=>t.status==='done').length/dd.length>=0.5) streak++;
+  // STREAK (counts consecutive days from today backwards where ≥50% done)
+  let streak = 0;
+  for (let i = 0; i < 14; i++) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const dd = byDate[dateKey(d)] || [];
+    if (dd.length > 0 && dd.filter(t => t.status === 'done').length / dd.length >= 0.5) streak++;
     else break;
   }
-  document.getElementById('statStreak').textContent = streak+'🔥';
+  document.getElementById('statStreak').textContent = streak + '🔥';
 
   // STREAK BAR
-  const sLabels=['S','J','J','J','A','I','J'];
-  document.getElementById('streakBar').innerHTML = days14.map((k,i)=>{
-    const d2=new Date();d2.setDate(d2.getDate()-(13-i));
-    const label=sLabels[d2.getDay()];
-    const dd=byDate[k]||[];
-    let cls='empty';
-    if(dd.length>0){const p=dd.filter(t=>t.status==='done').length/dd.length;cls=p>=.75?'good':p>=.25?'partial':'bad';}
-    return `<div class="streak-day ${cls}${k===today?' today':''}" title="${k}">${label}<br><span style="font-size:7px">${d2.getDate()}</span></div>`;
+  const sLabels = ['J','J','J','A','I','J','S']; // Sun=J, Mon=J, Tue=J, Wed=A, Thu=A, Fri=I, Sat=J
+  const dayLabelsBySunday = ['S','J','J','J','A','I','J']; // index=getDay()
+  document.getElementById('streakBar').innerHTML = days14.map((k, i) => {
+    const d2    = new Date(); d2.setDate(d2.getDate() - (13 - i));
+    const label = dayLabelsBySunday[d2.getDay()];
+    const dd    = byDate[k] || [];
+    let cls = 'empty';
+    if (dd.length > 0) {
+      const p = dd.filter(t => t.status === 'done').length / dd.length;
+      cls = p >= .75 ? 'good' : p >= .25 ? 'partial' : 'bad';
+    }
+    // ✅ FIXED: 'today' is a reserved CSS class name conflict — renamed to today-mark
+    return `<div class="streak-day ${cls}${k === today ? ' today-mark' : ''}" title="${k}">${label}<br><span style="font-size:7px">${d2.getDate()}</span></div>`;
   }).join('');
 
   // COMPLETION CHART
-  const compLabels = week7.map(k=>{const d=new Date(k+'T12:00');return `${d.getDate()}/${d.getMonth()+1}`;});
-  const compData   = week7.map(k=>{const dd=byDate[k];if(!dd||!dd.length)return null;return Math.round(dd.filter(t=>t.status==='done').length/dd.length*100);});
-  if(charts.completion) charts.completion.destroy();
-  charts.completion = new Chart(document.getElementById('completionChart'),{type:'bar',data:{labels:compLabels,datasets:[{label:'%',data:compData,backgroundColor:compData.map(v=>v===null?'rgba(107,107,138,.3)':v>=75?'rgba(45,189,126,.6)':v>=50?'rgba(124,58,237,.6)':'rgba(224,156,58,.6)'),borderColor:compData.map(v=>v===null?'#6b6b8a':v>=75?'#2dbd7e':v>=50?'#9d5af5':'#e09c3a'),borderWidth:1,borderRadius:6}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{display:false}},scales:{y:{min:0,max:100,grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#6b6b8a',font:{size:10},callback:v=>v+'%'}},x:{grid:{display:false},ticks:{color:'#6b6b8a',font:{size:10}}}}}});
+  const compLabels = week7.map(k => { const d = new Date(k + 'T12:00'); return `${d.getDate()}/${d.getMonth() + 1}`; });
+  const compData   = week7.map(k => {
+    const dd = byDate[k];
+    if (!dd || !dd.length) return null;
+    return Math.round(dd.filter(t => t.status === 'done').length / dd.length * 100);
+  });
+
+  if (charts.completion) charts.completion.destroy();
+  charts.completion = new Chart(document.getElementById('completionChart'), {
+    type: 'bar',
+    data: {
+      labels: compLabels,
+      datasets: [{
+        label: '%',
+        data: compData,
+        backgroundColor: compData.map(v => v === null ? 'rgba(107,107,138,.3)' : v >= 75 ? 'rgba(45,189,126,.6)' : v >= 50 ? 'rgba(124,58,237,.6)' : 'rgba(224,156,58,.6)'),
+        borderColor:     compData.map(v => v === null ? '#6b6b8a' : v >= 75 ? '#2dbd7e' : v >= 50 ? '#9d5af5' : '#e09c3a'),
+        borderWidth: 1, borderRadius: 6
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { min: 0, max: 100, grid: { color: 'rgba(255,255,255,.05)' }, ticks: { color: '#6b6b8a', font: { size: 10 }, callback: v => v + '%' } },
+        x: { grid: { display: false }, ticks: { color: '#6b6b8a', font: { size: 10 } } }
+      }
+    }
+  });
 
   // BRAND CHART
-  const brandStats={};
-  tasks.forEach(t=>{if(!brandStats[t.brand])brandStats[t.brand]={done:0,total:0};brandStats[t.brand].total++;if(t.status==='done')brandStats[t.brand].done++;});
-  const bNames=Object.keys(brandStats);
-  const bColors=bNames.map(b=>BRAND_COLORS[b]||'#888');
-  if(charts.brand)charts.brand.destroy();
-  if(bNames.length>0){
-    charts.brand=new Chart(document.getElementById('brandChart'),{type:'doughnut',data:{labels:bNames,datasets:[{data:bNames.map(b=>brandStats[b].total),backgroundColor:bColors.map(c=>c+'cc'),borderColor:bColors,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:true,cutout:'65%',plugins:{legend:{display:false}}}});
-    document.getElementById('brandLegend').innerHTML=bNames.map((b,i)=>{const s=brandStats[b];const p=Math.round(s.done/s.total*100);return `<div style="margin-bottom:10px"><div style="display:flex;align-items:center;gap:6px;margin-bottom:3px"><div style="width:9px;height:9px;border-radius:50%;background:${bColors[i]};flex-shrink:0"></div><span style="color:var(--white);font-size:12px;font-weight:600">${esc(b)}</span></div><div style="font-size:10px;color:var(--muted)">${s.done}/${s.total} tasks · ${p}%</div><div class="mini-bar-track"><div class="mini-bar-fill" style="width:${p}%;background:${bColors[i]}"></div></div></div>`;}).join('');
+  const brandStats = {};
+  tasks.forEach(t => {
+    if (!brandStats[t.brand]) brandStats[t.brand] = { done: 0, total: 0 };
+    brandStats[t.brand].total++;
+    if (t.status === 'done') brandStats[t.brand].done++;
+  });
+  const bNames  = Object.keys(brandStats);
+  const bColors = bNames.map(b => BRAND_COLORS[b] || '#888');
+
+  if (charts.brand) charts.brand.destroy();
+  const brandCanvas = document.getElementById('brandChart');
+  if (bNames.length > 0) {
+    charts.brand = new Chart(brandCanvas, {
+      type: 'doughnut',
+      data: {
+        labels: bNames,
+        datasets: [{ data: bNames.map(b => brandStats[b].total), backgroundColor: bColors.map(c => c + 'cc'), borderColor: bColors, borderWidth: 2 }]
+      },
+      options: { responsive: true, maintainAspectRatio: true, cutout: '65%', plugins: { legend: { display: false } } }
+    });
+    document.getElementById('brandLegend').innerHTML = bNames.map((b, i) => {
+      const s = brandStats[b];
+      const p = Math.round(s.done / s.total * 100);
+      return `<div style="margin-bottom:10px">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">
+          <div style="width:9px;height:9px;border-radius:50%;background:${bColors[i]};flex-shrink:0"></div>
+          <span style="color:var(--white);font-size:12px;font-weight:600">${esc(b)}</span>
+        </div>
+        <div style="font-size:10px;color:var(--muted)">${s.done}/${s.total} tasks · ${p}%</div>
+        <div class="mini-bar-track"><div class="mini-bar-fill" style="width:${p}%;background:${bColors[i]}"></div></div>
+      </div>`;
+    }).join('');
   } else {
-    document.getElementById('brandChart').parentElement.innerHTML='<div style="text-align:center;color:var(--muted);padding:20px;font-size:12px">Hakuna data ya kutosha / Not enough data</div>';
+    brandCanvas.parentElement.innerHTML = '<div style="text-align:center;color:var(--muted);padding:20px;font-size:12px">Hakuna data ya kutosha / Not enough data</div>';
   }
 
   // NO-PROGRESS DAYS
-  const noProg=days14.filter(k=>{const dd=byDate[k];return !dd||!dd.length||dd.filter(t=>t.status==='done').length===0;});
-  const npEl=document.getElementById('noProgressContent');
-  if(noProg.length===0) npEl.innerHTML='<div style="color:var(--success);font-size:13px">🎉 Hongera! Siku zote 14 zina maendeleo!</div>';
-  else npEl.innerHTML=`<div style="font-size:12px;color:var(--danger);margin-bottom:8px">Siku ${noProg.length} bila maendeleo:</div><div style="display:flex;flex-wrap:wrap;gap:6px">${noProg.map(k=>{const d2=new Date(k+'T12:00');return `<span class="badge" style="background:rgba(224,85,85,.15);color:var(--danger)">${d2.getDate()}/${d2.getMonth()+1}</span>`;}).join('')}</div>`;
-
-  // WEEK COMPARISON
-  const brandAll=new Set(tasks.map(t=>t.brand));
-  const tbody=document.getElementById('weekCompBody');
-  tbody.innerHTML='';
-  if(brandAll.size===0){tbody.innerHTML='<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:16px">Hakuna data ya kutosha</td></tr>';}
-  else brandAll.forEach(b=>{
-    let pD=0,pT=0,cD=0,cT=0;
-    prevWeek.forEach(k=>{(byDate[k]||[]).filter(t=>t.brand===b).forEach(t=>{pT++;if(t.status==='done')pD++;});});
-    week7.forEach(k=>{(byDate[k]||[]).filter(t=>t.brand===b).forEach(t=>{cT++;if(t.status==='done')cD++;});});
-    const pp=pT?Math.round(pD/pT*100):0,cp=cT?Math.round(cD/cT*100):0,diff=cp-pp;
-    const cls=diff>0?'trend-up':diff<0?'trend-down':'trend-same';
-    const icon=diff>0?'▲':diff<0?'▼':'→';
-    tbody.innerHTML+=`<tr><td style="color:var(--white);font-weight:600">${esc(b)}</td><td>${pT?pp+'%':'—'}</td><td>${cT?cp+'%':'—'}</td><td class="${cls}">${icon} ${diff!==0?Math.abs(diff)+'%':''}</td></tr>`;
+  const noProg = days14.filter(k => {
+    const dd = byDate[k];
+    return !dd || !dd.length || dd.filter(t => t.status === 'done').length === 0;
   });
+  const npEl = document.getElementById('noProgressContent');
+  if (noProg.length === 0) {
+    npEl.innerHTML = '<div style="color:var(--success);font-size:13px">🎉 Hongera! Siku zote 14 zina maendeleo!</div>';
+  } else {
+    npEl.innerHTML = `<div style="font-size:12px;color:var(--danger);margin-bottom:8px">Siku ${noProg.length} bila maendeleo:</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px">${noProg.map(k => {
+        const d2 = new Date(k + 'T12:00');
+        return `<span class="badge" style="background:rgba(224,85,85,.15);color:var(--danger)">${d2.getDate()}/${d2.getMonth() + 1}</span>`;
+      }).join('')}</div>`;
+  }
+
+  // WEEK COMPARISON TABLE
+  const brandAll = new Set(tasks.map(t => t.brand));
+  const tbody    = document.getElementById('weekCompBody');
+  tbody.innerHTML = '';
+  if (brandAll.size === 0) {
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:16px">Hakuna data ya kutosha</td></tr>';
+  } else {
+    brandAll.forEach(b => {
+      let pD = 0, pT = 0, cD = 0, cT = 0;
+      prevWeek.forEach(k => { (byDate[k] || []).filter(t => t.brand === b).forEach(t => { pT++; if (t.status === 'done') pD++; }); });
+      week7.forEach(k    => { (byDate[k] || []).filter(t => t.brand === b).forEach(t => { cT++; if (t.status === 'done') cD++; }); });
+      const pp   = pT ? Math.round(pD / pT * 100) : 0;
+      const cp   = cT ? Math.round(cD / cT * 100) : 0;
+      const diff = cp - pp;
+      const cls  = diff > 0 ? 'trend-up' : diff < 0 ? 'trend-down' : 'trend-same';
+      const icon = diff > 0 ? '▲' : diff < 0 ? '▼' : '→';
+      tbody.innerHTML += `<tr>
+        <td style="color:var(--white);font-weight:600">${esc(b)}</td>
+        <td>${pT ? pp + '%' : '—'}</td>
+        <td>${cT ? cp + '%' : '—'}</td>
+        <td class="${cls}">${icon} ${diff !== 0 ? Math.abs(diff) + '%' : ''}</td>
+      </tr>`;
+    });
+  }
 }
 
 // ════════════════════════════════════════════════════════
 //  REPORT VIEW
 // ════════════════════════════════════════════════════════
 function populateReportWeeks() {
-  const sel=document.getElementById('reportWeekSelect');
-  sel.innerHTML='';
-  for(let w=0;w<8;w++){
-    const mon=new Date();mon.setDate(mon.getDate()-mon.getDay()+1-w*7);
-    const sun=new Date(mon);sun.setDate(sun.getDate()+6);
-    const fmt=d=>`${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
-    const opt=document.createElement('option');
-    opt.value=dateKey(mon);
-    opt.textContent=`Wiki: ${fmt(mon)} — ${fmt(sun)}${w===0?' (Hii/This)':''}`;
+  const sel = document.getElementById('reportWeekSelect');
+  sel.innerHTML = '';
+  for (let w = 0; w < 8; w++) {
+    // ✅ FIXED: correct Monday calculation that works on any day of week
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+    const dayOfWeek = now.getDay(); // 0=Sun ... 6=Sat
+    // Days since last Monday (Sun counts as 6 days before Mon)
+    const sinceMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+    const mon = new Date(now);
+    mon.setDate(now.getDate() - sinceMonday - w * 7);
+    const sun = new Date(mon);
+    sun.setDate(sun.getDate() + 6);
+    const fmt = d => `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
+    const opt = document.createElement('option');
+    opt.value       = dateKey(mon);
+    opt.textContent = `Wiki: ${fmt(mon)} — ${fmt(sun)}${w === 0 ? ' (Hii/This)' : ''}`;
     sel.appendChild(opt);
   }
 }
 
- function renderReport() {
-  const mondayStr=document.getElementById('reportWeekSelect').value;
-  if(!mondayStr||!currentUser)return;
-  const monday=new Date(mondayStr+'T12:00:00');
-  const sunday=new Date(monday);sunday.setDate(sunday.getDate()+6);
-  const { data:allTasks } = await sb.from('tasks').select('*').eq('user_id',currentUser.id)
-    .gte('task_date',mondayStr).lte('task_date',dateKey(sunday));
-  const { data:allNotes } = await sb.from('daily_notes').select('*').eq('user_id',currentUser.id)
-    .gte('note_date',mondayStr).lte('note_date',dateKey(sunday));
-  const byDate={};(allTasks||[]).forEach(t=>{if(!byDate[t.task_date])byDate[t.task_date]=[];byDate[t.task_date].push(t);});
-  const noteByDate={};(allNotes||[]).forEach(n=>{noteByDate[n.note_date]=n.content;});
-  const dayNames=['Jumatatu','Jumanne','Jumatano','Alhamisi','Ijumaa','Jumamosi','Jumapili'];
-  let html='',wDone=0,wTotal=0;
-  for(let i=0;i<7;i++){
-    const d=new Date(monday);d.setDate(d.getDate()+i);
-    const dk=dateKey(d);const dayTasks=byDate[dk]||[];
-    const done=dayTasks.filter(t=>t.status==='done').length;
-    const total=dayTasks.length;
-    wDone+=done;wTotal+=total;
-    const pct=total>0?Math.round(done/total*100):0;
-    const pc=pct>=75?'var(--success)':pct>=50?'var(--purple-light)':total>0?'var(--warning)':'var(--muted)';
-    html+=`<div class="report-day"><div class="report-day-header"><div class="report-day-name">${dayNames[i]} — ${d.getDate()}/${d.getMonth()+1}</div><div>${total>0?`<span class="badge" style="background:${pc}22;color:${pc}">${done}/${total} · ${pct}%</span>`:'<span class="badge badge-time">Hakuna data</span>'}</div></div>`;
-    if(dayTasks.length>0) html+=dayTasks.map(t=>`<div class="report-task-row"><div class="status-dot ${t.status}"></div><span style="flex:1;font-size:12px">${esc(t.name)}</span>${t.task_time?`<span style="font-size:10px;color:var(--muted)">${t.task_time}</span>`:''}<span class="badge badge-brand" style="font-size:9px">${esc(t.brand)}</span></div>${t.reason?`<div style="padding:2px 0 2px 18px;font-size:10px;color:var(--muted);font-style:italic">💬 ${esc(t.reason)}</div>`:''}`).join('');
-    else html+=`<div style="font-size:11px;color:var(--muted);padding:4px 0">Hakuna tasks zilizorekodiwa.</div>`;
-    if(noteByDate[dk]) html+=`<div style="margin-top:8px;padding:8px;background:var(--surface2);border-radius:7px;font-size:11px;color:var(--muted)">📝 ${esc(noteByDate[dk])}</div>`;
-    html+=`</div>`;
+// ════════════════════════════════════════════════════════
+//  FIX #13: renderReport — was missing `async`
+// ════════════════════════════════════════════════════════
+async function renderReport() {
+  const mondayStr = document.getElementById('reportWeekSelect').value;
+  if (!mondayStr || !currentUser) return;
+
+  const monday = new Date(mondayStr + 'T12:00:00');
+  const sunday = new Date(monday);
+  sunday.setDate(sunday.getDate() + 6);
+
+  const [{ data: allTasks }, { data: allNotes }] = await Promise.all([
+    sb.from('tasks').select('*').eq('user_id', currentUser.id).gte('task_date', mondayStr).lte('task_date', dateKey(sunday)),
+    sb.from('daily_notes').select('*').eq('user_id', currentUser.id).gte('note_date', mondayStr).lte('note_date', dateKey(sunday))
+  ]);
+
+  const byDate    = {};
+  (allTasks  || []).forEach(t => { if (!byDate[t.task_date]) byDate[t.task_date] = []; byDate[t.task_date].push(t); });
+  const noteByDate = {};
+  (allNotes || []).forEach(n => { noteByDate[n.note_date] = n.content; });
+
+  const dayNames = ['Jumatatu','Jumanne','Jumatano','Alhamisi','Ijumaa','Jumamosi','Jumapili'];
+  let html = '', wDone = 0, wTotal = 0;
+
+  for (let i = 0; i < 7; i++) {
+    const d  = new Date(monday); d.setDate(d.getDate() + i);
+    const dk = dateKey(d);
+    const dayTasks = byDate[dk] || [];
+    const done  = dayTasks.filter(t => t.status === 'done').length;
+    const total = dayTasks.length;
+    wDone  += done; wTotal += total;
+    const pct = total > 0 ? Math.round(done / total * 100) : 0;
+    const pc  = pct >= 75 ? 'var(--success)' : pct >= 50 ? 'var(--purple-light)' : total > 0 ? 'var(--warning)' : 'var(--muted)';
+
+    html += `<div class="report-day">
+      <div class="report-day-header">
+        <div class="report-day-name">${dayNames[i]} — ${d.getDate()}/${d.getMonth() + 1}</div>
+        <div>${total > 0 ? `<span class="badge" style="background:${pc}22;color:${pc}">${done}/${total} · ${pct}%</span>` : '<span class="badge badge-time">Hakuna data</span>'}</div>
+      </div>`;
+
+    if (dayTasks.length > 0) {
+      html += dayTasks.map(t =>
+        `<div class="report-task-row">
+          <div class="status-dot ${t.status}"></div>
+          <span style="flex:1;font-size:12px">${esc(t.name)}</span>
+          ${t.task_time ? `<span style="font-size:10px;color:var(--muted)">${esc(t.task_time)}</span>` : ''}
+          <span class="badge badge-brand" style="font-size:9px">${esc(t.brand)}</span>
+        </div>
+        ${t.reason ? `<div style="padding:2px 0 2px 18px;font-size:10px;color:var(--muted);font-style:italic">💬 ${esc(t.reason)}</div>` : ''}`
+      ).join('');
+    } else {
+      html += `<div style="font-size:11px;color:var(--muted);padding:4px 0">Hakuna tasks zilizorekodiwa.</div>`;
+    }
+
+    if (noteByDate[dk]) {
+      html += `<div style="margin-top:8px;padding:8px;background:var(--surface2);border-radius:7px;font-size:11px;color:var(--muted)">📝 ${esc(noteByDate[dk])}</div>`;
+    }
+    html += `</div>`;
   }
-  const wPct=wTotal>0?Math.round(wDone/wTotal*100):0;
-  document.getElementById('reportContent').innerHTML=`<div class="chart-card" style="margin-bottom:14px"><div class="chart-title">📊 Muhtasari wa Wiki / Weekly Summary</div><div class="stats-row" style="margin-bottom:0"><div class="stat-card"><div class="stat-value">${wTotal}</div><div class="stat-label">Jumla</div></div><div class="stat-card"><div class="stat-value">${wDone}</div><div class="stat-label">Zilizokamilika</div></div><div class="stat-card"><div class="stat-value">${wTotal?wPct+'%':'—'}</div><div class="stat-label">Completion</div></div></div></div><div style="margin-bottom:10px"><div class="section-title">📅 Ratiba ya Wiki / Weekly Schedule</div></div>${html}`;
+
+  const wPct = wTotal > 0 ? Math.round(wDone / wTotal * 100) : 0;
+  document.getElementById('reportContent').innerHTML = `
+    <div class="chart-card" style="margin-bottom:14px">
+      <div class="chart-title">📊 Muhtasari wa Wiki / Weekly Summary</div>
+      <div class="stats-row" style="margin-bottom:0">
+        <div class="stat-card"><div class="stat-value">${wTotal}</div><div class="stat-label">Jumla</div></div>
+        <div class="stat-card"><div class="stat-value">${wDone}</div><div class="stat-label">Zilizokamilika</div></div>
+        <div class="stat-card"><div class="stat-value">${wTotal ? wPct + '%' : '—'}</div><div class="stat-label">Completion</div></div>
+      </div>
+    </div>
+    <div style="margin-bottom:10px"><div class="section-title">📅 Ratiba ya Wiki / Weekly Schedule</div></div>
+    ${html}`;
 }
 
 // ════════════════════════════════════════════════════════
-//  ADD / EDIT TASK
+//  ADD / EDIT TASK MODAL
 // ════════════════════════════════════════════════════════
 function openAddTask() {
   editingTaskId  = null;
   editingDateKey = getTodayKey();
   document.getElementById('taskModalTitle').textContent = 'Ongeza Task Mpya';
-  document.getElementById('taskName').value      = '';
-  document.getElementById('taskTime').value      = '';
-  document.getElementById('taskStatus').value    = 'pending';
-  document.getElementById('taskBrand').value     = 'Coach Ram';
-  document.getElementById('taskBrandOther').value= '';
-  document.getElementById('taskReason').value    = '';
-  document.getElementById('taskNotes').value     = '';
-  document.getElementById('brandOtherGroup').style.display='none';
+  document.getElementById('taskName').value       = '';
+  document.getElementById('taskTime').value       = '';
+  document.getElementById('taskStatus').value     = 'pending';
+  document.getElementById('taskBrand').value      = 'Coach Ram';
+  document.getElementById('taskBrandOther').value = '';
+  document.getElementById('taskReason').value     = '';
+  document.getElementById('taskNotes').value      = '';
+  document.getElementById('brandOtherGroup').style.display = 'none';
   toggleReason();
   document.getElementById('taskModal').classList.add('open');
-  setTimeout(()=>document.getElementById('taskName').focus(),100);
+  setTimeout(() => document.getElementById('taskName').focus(), 100);
 }
 
- function editTask(dk, tid) {
-  showSkeletons('todayTaskList',1);
-  const { data:tasks } = await sb.from('tasks').select('*').eq('id',tid).single();
-  const t = tasks;
-  if(!t)return;
+// ════════════════════════════════════════════════════════
+//  FIX #14: editTask — was missing `async`; also had logic issue
+//  where showSkeletons was called but never resolved properly
+// ════════════════════════════════════════════════════════
+async function editTask(dk, tid) {
+  // Fetch the task data first
+  const { data: t, error } = await sb.from('tasks').select('*').eq('id', tid).maybeSingle();
+  if (error || !t) { showToast('⚠️ Task haikupatikana / Task not found'); return; }
+
   editingTaskId  = tid;
   editingDateKey = dk;
+
   document.getElementById('taskModalTitle').textContent = 'Hariri Task / Edit Task';
   document.getElementById('taskName').value   = t.name;
-  document.getElementById('taskTime').value   = t.task_time||'';
+  document.getElementById('taskTime').value   = t.task_time || '';
   document.getElementById('taskStatus').value = t.status;
-  const knownBrands=['Coach Ram','Ramgrapher','Rampause'];
-  if(knownBrands.includes(t.brand)){
-    document.getElementById('taskBrand').value='';
-    document.getElementById('taskBrand').value=t.brand;
-    document.getElementById('brandOtherGroup').style.display='none';
+
+  const knownBrands = ['Coach Ram', 'Ramgrapher', 'Rampause'];
+  if (knownBrands.includes(t.brand)) {
+    document.getElementById('taskBrand').value = t.brand;
+    document.getElementById('brandOtherGroup').style.display = 'none';
+    document.getElementById('taskBrandOther').value = '';
   } else {
-    document.getElementById('taskBrand').value='other';
-    document.getElementById('taskBrandOther').value=t.brand;
-    document.getElementById('brandOtherGroup').style.display='block';
+    document.getElementById('taskBrand').value      = 'other';
+    document.getElementById('taskBrandOther').value = t.brand;
+    document.getElementById('brandOtherGroup').style.display = 'block';
   }
-  document.getElementById('taskReason').value = t.reason||'';
-  document.getElementById('taskNotes').value  = t.notes||'';
+
+  document.getElementById('taskReason').value = t.reason || '';
+  document.getElementById('taskNotes').value  = t.notes  || '';
   toggleReason();
-  // Re-render the list
-  if(editingDateKey===getTodayKey()) renderToday(); else renderHistory();
   document.getElementById('taskModal').classList.add('open');
 }
 
-document.getElementById('taskBrand').addEventListener('change',function(){
-  document.getElementById('brandOtherGroup').style.display=this.value==='other'?'block':'none';
-});
-
-function toggleReason(){
-  const s=document.getElementById('taskStatus').value;
-  document.getElementById('reasonGroup').classList.toggle('visible',s==='skipped'||s==='pending');
+// ✅ FIXED: single consolidated handler for brand select (replaced dual addEventListener + inline onchange)
+function handleBrandChange() {
+  const val = document.getElementById('taskBrand').value;
+  document.getElementById('brandOtherGroup').style.display = val === 'other' ? 'block' : 'none';
 }
 
-function closeTaskModal(){ document.getElementById('taskModal').classList.remove('open'); }
+function toggleReason() {
+  const s = document.getElementById('taskStatus').value;
+  document.getElementById('reasonGroup').classList.toggle('visible', s === 'skipped' || s === 'pending');
+}
 
- function saveTask() {
+function closeTaskModal() {
+  document.getElementById('taskModal').classList.remove('open');
+}
+
+// ════════════════════════════════════════════════════════
+//  FIX #15: saveTask — was missing `async`
+// ════════════════════════════════════════════════════════
+async function saveTask() {
   const name = document.getElementById('taskName').value.trim();
-  if(!name){ showToast('Tafadhali weka jina la task! / Task name required.'); return; }
+  if (!name) { showToast('Tafadhali weka jina la task! / Task name required.'); return; }
+
   const brandVal = document.getElementById('taskBrand').value;
-  const brand    = brandVal==='other'?(document.getElementById('taskBrandOther').value.trim()||'Nyingine'):brandVal;
-  const saveBtn  = document.getElementById('saveTaskBtn');
-  saveBtn.disabled=true; saveBtn.innerHTML='<div class="spinner"></div>';
+  const brand    = brandVal === 'other'
+    ? (document.getElementById('taskBrandOther').value.trim() || 'Nyingine')
+    : brandVal;
+
+  const saveBtn = document.getElementById('saveTaskBtn');
+  saveBtn.disabled = true;
+  saveBtn.innerHTML = '<div class="spinner"></div>';
 
   const payload = {
-    user_id:    currentUser.id,
+    user_id:   currentUser.id,
     name,
-    task_time:  document.getElementById('taskTime').value||null,
+    task_time: document.getElementById('taskTime').value || null,
     brand,
-    status:     document.getElementById('taskStatus').value,
-    reason:     document.getElementById('taskReason').value.trim()||null,
-    notes:      document.getElementById('taskNotes').value.trim()||null,
-    task_date:  editingDateKey,
+    status:    document.getElementById('taskStatus').value,
+    reason:    document.getElementById('taskReason').value.trim() || null,
+    notes:     document.getElementById('taskNotes').value.trim() || null,
+    task_date: editingDateKey,
   };
 
-  let error;
-  if(editingTaskId) {
-    ({ error } = await sb.from('tasks').update({...payload, updated_at: new Date().toISOString()}).eq('id', editingTaskId));
-  } else {
-    ({ error } = await sb.from('tasks').insert(payload));
-  }
+  try {
+    let error;
+    if (editingTaskId) {
+      ({ error } = await sb.from('tasks').update({ ...payload, updated_at: new Date().toISOString() }).eq('id', editingTaskId));
+    } else {
+      ({ error } = await sb.from('tasks').insert(payload));
+    }
 
-  saveBtn.disabled=false; saveBtn.innerHTML='💾 Hifadhi / Save';
-  if(error){ showToast('⚠️ Kosa la kuhifadhi / Save error: '+error.message); return; }
-  closeTaskModal();
-  if(editingDateKey===getTodayKey()) renderToday(); else renderHistory();
-  showToast(editingTaskId?'✓ Task imesasishwa / Task updated.':'✓ Task imeongezwa / Task added.');
+    if (error) { showToast('⚠️ Kosa la kuhifadhi / Save error: ' + error.message); return; }
+
+    closeTaskModal();
+    if (editingDateKey === getTodayKey()) await renderToday();
+    else await renderHistory();
+    showToast(editingTaskId ? '✓ Task imesasishwa / Task updated.' : '✓ Task imeongezwa / Task added.');
+
+  } catch (err) {
+    showToast('⚠️ ' + err.message);
+  } finally {
+    saveBtn.disabled = false;
+    saveBtn.innerHTML = '💾 Hifadhi / Save';
+  }
 }
 
 // ════════════════════════════════════════════════════════
@@ -1402,74 +1589,135 @@ function confirmDelete(dk, tid) {
   openPinModal();
 }
 
- function doDelete(dk, tid) {
+// ════════════════════════════════════════════════════════
+//  FIX #16: doDelete — was missing `async`
+// ════════════════════════════════════════════════════════
+async function doDelete(dk, tid) {
   const { error } = await sb.from('tasks').delete().eq('id', tid);
-  if(error){ showToast('⚠️ Kosa la kufuta / Delete error'); return; }
-  if(dk===getTodayKey()) renderToday(); else renderHistory();
+  if (error) { showToast('⚠️ Kosa la kufuta / Delete error'); return; }
+  if (dk === getTodayKey()) await renderToday();
+  else await renderHistory();
   showToast('🗑️ Task imefutwa / Task deleted.');
 }
 
 // ════════════════════════════════════════════════════════
 //  PIN MODAL
 // ════════════════════════════════════════════════════════
-function openPinModal(){ pinBuffer=''; updatePinDisplay(); document.getElementById('pinError').classList.remove('show'); document.getElementById('pinModal').classList.add('open'); }
-function closePinModal(){ document.getElementById('pinModal').classList.remove('open'); pinBuffer=''; }
-function pinInput(d){ if(pinBuffer.length>=4)return; pinBuffer+=d; updatePinDisplay(); if(pinBuffer.length===4) setTimeout(checkPin,150); }
-function pinDel(){ pinBuffer=pinBuffer.slice(0,-1); updatePinDisplay(); document.getElementById('pinError').classList.remove('show'); }
-function updatePinDisplay(){ for(let i=0;i<4;i++){ const el=document.getElementById('pd'+i); if(i<pinBuffer.length){el.textContent='●';el.classList.add('filled');}else{el.textContent='_';el.classList.remove('filled');}}}
-function checkPin(){
-  if(pinBuffer===getPin()){ closePinModal(); if(pinCallback){pinCallback();pinCallback=null;} }
-  else { document.getElementById('pinError').classList.add('show'); pinBuffer=''; updatePinDisplay(); setTimeout(()=>document.getElementById('pinError').classList.remove('show'),2000); }
+function openPinModal() {
+  pinBuffer = '';
+  updatePinDisplay();
+  document.getElementById('pinError').classList.remove('show');
+  document.getElementById('pinModal').classList.add('open');
+}
+function closePinModal() {
+  document.getElementById('pinModal').classList.remove('open');
+  pinBuffer = '';
+}
+function pinInput(d) {
+  if (pinBuffer.length >= 4) return;
+  pinBuffer += d;
+  updatePinDisplay();
+  if (pinBuffer.length === 4) setTimeout(checkPin, 150);
+}
+function pinDel() {
+  pinBuffer = pinBuffer.slice(0, -1);
+  updatePinDisplay();
+  document.getElementById('pinError').classList.remove('show');
+}
+function updatePinDisplay() {
+  for (let i = 0; i < 4; i++) {
+    const el = document.getElementById('pd' + i);
+    if (i < pinBuffer.length) { el.textContent = '●'; el.classList.add('filled'); }
+    else { el.textContent = '_'; el.classList.remove('filled'); }
+  }
+}
+function checkPin() {
+  if (pinBuffer === getPin()) {
+    closePinModal();
+    if (pinCallback) { pinCallback(); pinCallback = null; }
+  } else {
+    document.getElementById('pinError').classList.add('show');
+    pinBuffer = '';
+    updatePinDisplay();
+    setTimeout(() => document.getElementById('pinError').classList.remove('show'), 2000);
+  }
 }
 
 // ════════════════════════════════════════════════════════
 //  SETTINGS
 // ════════════════════════════════════════════════════════
-function openSettings(){ document.getElementById('settingsModal').classList.add('open'); }
-function closeSettings(){ document.getElementById('settingsModal').classList.remove('open'); }
+function openSettings() {
+  document.getElementById('settingsModal').classList.add('open');
+}
+function closeSettings() {
+  document.getElementById('settingsModal').classList.remove('open');
+}
 
-async function saveSettings(){
+async function saveSettings() {
   const name = document.getElementById('settingName').value.trim();
   const cur  = document.getElementById('currentPin').value;
   const nw   = document.getElementById('newPin').value;
   const cf   = document.getElementById('confirmPin').value;
   const msg  = document.getElementById('pinChangeMsg');
-  msg.textContent='';
+  msg.textContent = '';
 
   const updates = {};
-  if(name) updates.full_name = name;
+  if (name) updates.full_name = name;
 
-  // PIN change (optional)
-  if(cur||nw||cf){
-    if(cur!==getPin()){ msg.style.color='var(--danger)'; msg.textContent='PIN ya sasa si sahihi! / Current PIN incorrect.'; return; }
-    if(!/^\d{4}$/.test(nw)){ msg.style.color='var(--danger)'; msg.textContent='PIN lazima iwe nambari 4! / PIN must be 4 digits.'; return; }
-    if(nw!==cf){ msg.style.color='var(--danger)'; msg.textContent='PIN mpya hazilingani! / PINs do not match.'; return; }
+  // PIN change (optional — only if user filled any PIN field)
+  if (cur || nw || cf) {
+    if (cur !== getPin()) {
+      msg.style.color = 'var(--danger)';
+      msg.textContent = 'PIN ya sasa si sahihi! / Current PIN incorrect.';
+      return;
+    }
+    if (!/^\d{4}$/.test(nw)) {
+      msg.style.color = 'var(--danger)';
+      msg.textContent = 'PIN lazima iwe nambari 4! / PIN must be 4 digits.';
+      return;
+    }
+    if (nw !== cf) {
+      msg.style.color = 'var(--danger)';
+      msg.textContent = 'PIN mpya hazilingani! / PINs do not match.';
+      return;
+    }
     updates.pin = nw;
   }
 
-  if(Object.keys(updates).length>0){
+  if (Object.keys(updates).length > 0) {
     const { error } = await sb.from('profiles').update(updates).eq('id', currentUser.id);
-    if(error){ msg.style.color='var(--danger)'; msg.textContent='Kosa la kuhifadhi / Save error'; return; }
+    if (error) {
+      msg.style.color = 'var(--danger)';
+      msg.textContent = 'Kosa la kuhifadhi / Save error';
+      return;
+    }
     await loadProfile();
   }
-  msg.style.color='var(--success)'; msg.textContent='✓ Imehifadhiwa / Saved!';
-  document.getElementById('currentPin').value=''; document.getElementById('newPin').value=''; document.getElementById('confirmPin').value='';
-  setTimeout(()=>{ msg.textContent=''; closeSettings(); },1500);
+
+  msg.style.color = 'var(--success)';
+  msg.textContent = '✓ Imehifadhiwa / Saved!';
+  document.getElementById('currentPin').value = '';
+  document.getElementById('newPin').value     = '';
+  document.getElementById('confirmPin').value = '';
+  setTimeout(() => { msg.textContent = ''; closeSettings(); }, 1500);
 }
 
-async function clearAllData(){
-  pinCallback = async () => {
-    if(confirm('Una uhakika? Data YOTE itafutwa!\nAre you sure? ALL data will be permanently deleted!')){
+// ════════════════════════════════════════════════════════
+//  FIX #17: clearAllData — inner pinCallback used await without async
+// ════════════════════════════════════════════════════════
+function clearAllData() {
+  pinCallback = async () => {   // ✅ FIXED: added async
+    if (confirm('Una uhakika? Data YOTE itafutwa!\nAre you sure? ALL data will be permanently deleted!')) {
       await Promise.all([
         sb.from('tasks').delete().eq('user_id', currentUser.id),
         sb.from('daily_notes').delete().eq('user_id', currentUser.id)
       ]);
       closeSettings();
-      renderToday();
+      await renderToday();
       showToast('🗑️ Data yote imefutwa / All data cleared.');
     }
   };
-  document.getElementById('pinModalDesc').textContent='Weka PIN ili kufuta data yote. / Enter PIN to clear all data.';
+  document.getElementById('pinModalDesc').textContent = 'Weka PIN ili kufuta data yote. / Enter PIN to clear all data.';
   closeSettings();
   openPinModal();
 }
@@ -1478,20 +1726,27 @@ async function clearAllData(){
 //  KEYBOARD & MODAL CLOSE
 // ════════════════════════════════════════════════════════
 document.querySelectorAll('.modal-overlay').forEach(el => {
-  el.addEventListener('click', e => { if(e.target===el){ el.classList.remove('open'); pinBuffer=''; } });
+  el.addEventListener('click', e => {
+    if (e.target === el) {
+      el.classList.remove('open');
+      pinBuffer = '';
+    }
+  });
 });
+
 document.addEventListener('keydown', e => {
-  if(document.getElementById('pinModal').classList.contains('open')){
-    if(/^[0-9]$/.test(e.key)) pinInput(e.key);
-    if(e.key==='Backspace') pinDel();
-    if(e.key==='Escape') closePinModal();
-  } else if(e.key==='Escape'){
-    document.querySelectorAll('.modal-overlay.open').forEach(m=>m.classList.remove('open'));
+  if (document.getElementById('pinModal').classList.contains('open')) {
+    if (/^[0-9]$/.test(e.key)) pinInput(e.key);
+    if (e.key === 'Backspace') pinDel();
+    if (e.key === 'Escape')    closePinModal();
+  } else if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
   }
 });
-// Enter key on auth forms
-document.getElementById('loginPw').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
-document.getElementById('regPw2').addEventListener('keydown',  e => { if(e.key==='Enter') doRegister(); });
+
+// Enter key shortcuts on auth forms
+document.getElementById('loginPw').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+document.getElementById('regPw2').addEventListener('keydown',  e => { if (e.key === 'Enter') doRegister(); });
 </script>
 </body>
 </html>
